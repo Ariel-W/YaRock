@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
+  public loginTitleText:string = "YaRock\nBe greener with us."
+  public joinButtonText:string = "Join us"
+
   constructor() { }
 
   ngOnInit() {

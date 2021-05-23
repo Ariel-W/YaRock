@@ -1,17 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="home-tab">
+    <div class="home-tab-content" *ngIf="showHomeContent">
+      <div class="green-actions">
+        <div class="green-action-container" *ngFor="let greenAction of greenActions" (click)="actionClicked(greenAction.case)">
+          <img class="green-action-image" src={{greenAction.imgSrc}} alt="greenActionImg" >
+          <div class="green-action-title">{{greenAction.title}}</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="home-tab-points">
+        <div class="home-tab-points-content">
+          <img src="assets/images/profile.png" alt="home-profile">
+          <div class="green-coins">
+            <div class="green-coins-amount">49</div>
+            <div class="green-coins-text">Green Coins</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-content" *ngIf="showActionContent">
+      <img class="action-context-image" src={{selectedActionContext.imgSrc}} alt="">
+      <div class="action-context-title">{{selectedActionContext.title}}</div>
+      <div> +5 Points</div>
+      <div class="action-context-divider"></div>
+      <div class="slides">
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+        <ion-slides [options]="slideOpts">
+          <ion-slide>
+            <div class="slide">
+              <div class="slide-item">
+                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <div class="slide-details">
+                  <div>{{selectedActionContext.sliderText1}}</div>
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+  
+          <ion-slide>
+            <div class="slide">
+              <div class="slide-item">
+                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <div class="slide-details">
+                  <div>{{selectedActionContext.sliderText1}}</div>
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+  
+          <ion-slide>
+            <div class="slide">
+              <div class="slide-item">
+                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <div class="slide-details">
+                  <div>{{selectedActionContext.sliderText1}}</div>
+                </div>
+              </div>
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </div>
+    </div>
+  </div>
 </ion-content>
