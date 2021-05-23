@@ -1,16 +1,23 @@
-.login{
+.opt-in{
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
     padding: 30px 10px;
 
+    &-image{
+        img{
+            width: 170px;
+            height: 130px;
+        }
+    }
+
     &-title{
         text-align: center;
-        font-size: 30px;
+        font-size: 16px;
         font-weight: bold;
         white-space: pre;
-        padding-top: 20px;
+        padding-top: 10px;
     }
 
     &-form{
@@ -25,11 +32,10 @@
             row-gap: 7px;
         }
 
-        .join-button{
+        .opt-in-button{
             font-size: 28px;
             font-weight: bold;
             height: 50px;
-            width: 250px;
         }
     }
 }

@@ -8,11 +8,16 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
+  {
+    path: 'opt-in',
+    loadChildren: () => import('./opt-in/opt-in.module').then( m => m.OptInPageModule)
+  },
   // http://localhost:8100/main/tabs/tab1
   {
     path: 'main',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
+
 ];
 
 @NgModule({

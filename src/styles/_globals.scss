@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Assistant', sans-serif;
+    src: url('../assets/fonts/Assistant-VariableFont_wght.ttf');
+}
+
+ion-content ion-button{
+    font-family: 'Assistant', sans-serif;
+}
+
+ion-tab-bar{
+    border:none
+}
+
+ion-button{
+    text-transform: none;
+    --border-radius: 8px;
+}
+
+ion-input{
+    // --placeholder-color: grey;
+
+    input .custom{
+        border-width: 0 0 1px;
+        border-color: black;
+        border-style: solid;
+    }
+}

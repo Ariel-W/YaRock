@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true">
+  <div class="profile-tab">
+    <div class="profile-info">
+      <div class="avatar">
+        <img src="assets/images/profile.png" alt="profile">
+        <div class="profile-name ls-1">Yair Israely</div>
+      </div>
+      <div class="points">
+        <div class="points-amount">49</div>
+        <img src="assets/icon/green-currency.png" class="green-currency" alt="currency">
+      </div>
+    </div>
+    <div class="yarok-bands">
+      <div class="yarok-bands-title">My Yarok Bands</div>
+      <div class="yarok-bands-content">
+        <div class="yarok-bands-list"> 
+          <ul *ngFor="let band of yarokBands">
+            <li>{{band.name}}</li>
+          </ul>
+        </div>
+        <div class="create-band">
+          <img src="assets/images/create-band.png" alt="">
+          <div>Create Group</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

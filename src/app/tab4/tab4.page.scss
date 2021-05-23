@@ -1,0 +1,53 @@
+.market-tab{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: space-between;
+    padding: 30px 10px;
+
+    &-header{
+
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        
+        .market-tab-title{
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .points{
+
+            &-amount{
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+
+    .slides{
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+
+        .slide{
+
+            display: flex;
+            flex-direction: column;
+
+            .slide-image{
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+    }
+}
+
+// ion-slides {
+//     height: 100%;
+//   }
