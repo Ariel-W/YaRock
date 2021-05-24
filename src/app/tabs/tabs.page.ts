@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EventsHandlerService } from '../services/events-handler.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
-  constructor() {}
+  constructor(private eventsHandler:EventsHandlerService) {
+    
+  }
 
+
+  test(event:any){
+    this.eventsHandler.tab1Selected.next(event);
+  }
 }

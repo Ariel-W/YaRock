@@ -13,26 +13,30 @@
       </div>
     </div>
     <div class="slides">
+      <ion-icon large class="slide-arrow-prev" name="arrow-undo" (click)="previousSlide()"></ion-icon>
       <ion-slides #marketSlider [options]="slideOpts">
         <ion-slide *ngFor="let slider of slidesContext">
           <div class="slide">
-            <div class="slide-item">
-              <img class="slide-image" src={{slider.firstImage}} alt="firstImage">
-              <div class="slide-details">
-                <div>{{slider.firstPoints}}</div>
-                <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+            <div class="slide-items">
+              <div class="slide-item">
+                <img class="slide-image" src={{slider.firstImage}} alt="firstImage">
+                <div class="slide-details">
+                  <div>{{slider.firstPoints}}</div>
+                  <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+                </div>
               </div>
-            </div>
-            <div class="slide-item">
-              <img class="slide-image" src={{slider.secondImage}} alt="secondImage">
-              <div class="slide-details">
-                <div>{{slider.secondPoints}}</div>
-                <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+              <div class="slide-item">
+                <img class="slide-image" src={{slider.secondImage}} alt="secondImage">
+                <div class="slide-details">
+                  <div>{{slider.secondPoints}}</div>
+                  <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+                </div>
               </div>
             </div>
           </div>
         </ion-slide>
       </ion-slides>
+      <ion-icon class="slide-arrow-next" name="arrow-redo" (click)="nextSlide()"></ion-icon>
     </div>
   </div>
 </ion-content>

@@ -1,11 +1,13 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
+import { EventsHandlerService } from '../services/events-handler.service';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page{
+export class Tab1Page implements OnInit{
 
   public showHomeContent:boolean = true;
   public showActionContent:boolean = false;
@@ -52,48 +54,54 @@ export class Tab1Page{
       sliderText1: 'Trash to Treasure Challenge'
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
+      imgSrc: 'assets/icon/green-power.png',
       title: 'Report Green Power Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
       sliderText1: 'Trash to Treasure Challenge'
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
+      imgSrc: 'assets/icon/water.png',
       title: 'Report Water Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
       sliderText1: 'Trash to Treasure Challenge'
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
+      imgSrc: 'assets/icon/recycle.png',
       title: 'Report Recycle Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
       sliderText1: 'Trash to Treasure Challenge'
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
+      imgSrc: 'assets/icon/plant-a-tree.png',
       title: 'Report Plant A Tree Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
       sliderText1: 'Trash to Treasure Challenge'
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
+      imgSrc: 'assets/icon/electricity.png',
       title: 'Report Electricity Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
       sliderText1: 'Trash to Treasure Challenge'
     },
   ]
 
+  @ViewChild('actionSlider') slides:IonSlides;
+
   slideOpts = {
     initialSlide: 0,
     speed: 400
   }
 
-  constructor() {}
-
-  // ngOnChanges(){
-  //   console.log("home ngoninit");
+  constructor(private eventsHandler:EventsHandlerService) {
     
-  // }
+  }
+
+  ngOnInit(){
+    this.eventsHandler.tab1Selected.subscribe((tab)=>{
+        this.showHomeContent = true;
+        this.showActionContent = false;
+    })
+  }
 
   actionClicked(action:string){
     this.showHomeContent = false;
@@ -128,6 +136,14 @@ export class Tab1Page{
         console.log("unknown green action");
         
     }
+  }
+
+  nextSlide(){
+    this.slides.slideNext();
+  }
+
+  previousSlide(){
+    this.slides.slidePrev();
   }
 
 }

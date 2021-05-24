@@ -8,7 +8,7 @@ import { IonSlides } from '@ionic/angular';
 })
 export class Tab4Page {
 
-  @ViewChild('marketSlider') slides:IonSlides;
+  @ViewChild('marketSlider') marketSlider:IonSlides;
 
   slidesContext = [
     {
@@ -44,9 +44,14 @@ export class Tab4Page {
 
   constructor() {}
 
-  // sliderChanged(event:any){
-  //   console.log(this.slides.getActiveIndex());
-     
-  // }
+  nextSlide(){
+    this.marketSlider.slideNext();
+  }
+
+  previousSlide(){
+    console.log("in prev");
+    
+    this.marketSlider.slidePrev();
+  }
 
 }

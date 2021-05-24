@@ -5,31 +5,26 @@
     height: 100%;
     padding: 30px 10px;
 
-    &-image{
-        img{
-            width: 170px;
-            height: 130px;
-        }
-    }
-
     &-title{
         text-align: center;
         font-size: 30px;
         font-weight: bold;
         white-space: pre;
         padding-top: 20px;
+        margin-bottom: 20px;
     }
 
     &-form{
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: space-around;
         height: 100%;
 
         .form-inputs{
             display: flex;
             flex-direction: column;
             row-gap: 7px;
+            padding: 0 20px;
         }
 
         .opt-in-button{
