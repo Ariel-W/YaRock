@@ -11,14 +11,19 @@
 .divider{
     height: 5px;
     width: 100%;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 1px solid var(--ion-color-secondary);
+    border-bottom: 1px solid var(--ion-color-secondary);
     margin: 10px 0;
 }
 
 .green-currency{
     width: 50px !important;
     height: 50px !important;
+
+    @media screen and(max-width:350px){
+        width: 40px !important;
+        height: 40px !important;
+    }
 }
 
 .bold{

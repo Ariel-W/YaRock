@@ -8,8 +8,8 @@
     </div>
     <div class="login-form">
       <div class="form-inputs">
-        <ion-input class="ion-text-center" placeholder="Name"></ion-input>
-        <ion-input class="ion-text-center" placeholder="Email"></ion-input>
+        <ion-input (ionBlur)="inputBlured($event)" (ionFocus)="inputBlured($event)" class="ion-text-center custom" placeholder={{namePlaceholder}}></ion-input>
+        <ion-input type="email" class="ion-text-center" placeholder="Email"></ion-input>
       </div>
       <ion-button [routerLink]="['/opt-in']" class="join-button ls-1">{{joinButtonText}}</ion-button>
     </div>

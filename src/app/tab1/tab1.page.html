@@ -19,46 +19,47 @@
       </div>
     </div>
     <div class="action-content" *ngIf="showActionContent">
-      <img class="action-context-image" src={{selectedActionContext.imgSrc}} alt="">
-      <div class="action-context-title">{{selectedActionContext.title}}</div>
-      <div> +5 Points</div>
-      <div class="action-context-divider"></div>
+      <div class="action-content-header">
+        <img class="action-content-image" src={{selectedActionContext.imgSrc}} alt="">
+        <div class="action-content-title bold">{{selectedActionContext.title}}</div>
+        <div class="action-content-points bold"> +5 Points</div>
+      </div>
+      <div class="action-content-divider"></div>
       <div class="slides">
+        <ion-icon class="slide-arrow-prev" name="arrow-undo" (click)="previousSlide()"></ion-icon>
+        <ion-slides #actionSlider [options]="slideOpts">
+          <ion-slide>
+            <div class="slide-item">
+              <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+              <div class="slide-details">
+                <div>{{selectedActionContext.sliderText1}}</div>
+              </div>
+            </div>
+            <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
+          </ion-slide>
+  
+            <ion-slide>
+              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
+              <div class="slide-item">
+                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <div class="slide-details">
+                  <div>{{selectedActionContext.sliderText1}}</div>
+                </div>
+              </div>
+              <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
+            </ion-slide>
 
-        <ion-slides [options]="slideOpts">
-          <ion-slide>
-            <div class="slide">
+            <ion-slide>
+              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
               <div class="slide-item">
                 <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
                 <div class="slide-details">
                   <div>{{selectedActionContext.sliderText1}}</div>
                 </div>
               </div>
-            </div>
-          </ion-slide>
-  
-          <ion-slide>
-            <div class="slide">
-              <div class="slide-item">
-                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
-                <div class="slide-details">
-                  <div>{{selectedActionContext.sliderText1}}</div>
-                </div>
-              </div>
-            </div>
-          </ion-slide>
-  
-          <ion-slide>
-            <div class="slide">
-              <div class="slide-item">
-                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
-                <div class="slide-details">
-                  <div>{{selectedActionContext.sliderText1}}</div>
-                </div>
-              </div>
-            </div>
-          </ion-slide>
-        </ion-slides>
+            </ion-slide>
+          </ion-slides>
+          <ion-icon class="slide-arrow-next" name="arrow-redo" (click)="nextSlide()"></ion-icon>
       </div>
     </div>
   </div>
