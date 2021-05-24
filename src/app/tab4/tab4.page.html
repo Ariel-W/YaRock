@@ -1,70 +1,38 @@
 <ion-content [fullscreen]="true">
   <div class="market-tab">
     <div class="market-tab-header">
-      <div></div>
+      <div class="spacer"></div>
       <div class="market-tab-title ls-1">
         Green Market
       </div>
       <div class="points">
-        <div class="points-amount">49</div>
+        <div class="points-amount bold">49</div>
         <div>
           <img class="green-currency" src="assets/icon/green-currency.png" alt="">
         </div>
       </div>
     </div>
     <div class="slides">
-      <ion-button>Prev Slide</ion-button>
-      <ion-slides [options]="slideOpts">
-        <ion-slide>
+      <ion-slides #marketSlider [options]="slideOpts">
+        <ion-slide *ngFor="let slider of slidesContext">
           <div class="slide">
             <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-1.png" alt="">
+              <img class="slide-image" src={{slider.firstImage}} alt="firstImage">
               <div class="slide-details">
-                <div>1580 </div>
+                <div>{{slider.firstPoints}}</div>
+                <img class="green-currency" src="assets/icon/green-currency.png" alt="">
               </div>
             </div>
             <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-1.png" alt="">
+              <img class="slide-image" src={{slider.secondImage}} alt="secondImage">
               <div class="slide-details">
-                <div>1580</div>
-              </div>
-            </div>
-          </div>
-        </ion-slide>
-        <ion-slide>
-          <div class="slide">
-            <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-1.png" alt="">
-              <div class="slide-details">
-                <div>1580</div>
-              </div>
-            </div>
-            <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-1.png" alt="">
-              <div class="slide-details">
-                <div>1580</div>
-              </div>
-            </div>
-          </div>
-        </ion-slide>
-        <ion-slide>
-          <div class="slide">
-            <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-1.png" alt="">
-              <div class="slide-details">
-                <div>1580</div>
-              </div>
-            </div>
-            <div class="slide-item">
-              <img class="slide-image" src="assets/images/market-bike-2.png" alt="">
-              <div class="slide-details">
-                <div>1580</div>
+                <div>{{slider.secondPoints}}</div>
+                <img class="green-currency" src="assets/icon/green-currency.png" alt="">
               </div>
             </div>
           </div>
         </ion-slide>
       </ion-slides>
-      <ion-button>Next Slide</ion-button>
     </div>
   </div>
 </ion-content>
