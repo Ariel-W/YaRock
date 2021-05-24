@@ -25,3 +25,12 @@ ion-input{
         border-style: solid;
     }
 }
+
+ion-slides {
+    height: 100%;
+    // margin-top: 25%;
+
+    ion-slide{
+        width: 100% !important;
+    }
+}

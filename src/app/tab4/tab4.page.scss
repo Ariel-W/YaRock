@@ -11,15 +11,22 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
+
+        .spacer{
+            flex: 1;
+        }
         
         .market-tab-title{
+            flex: 3;
             font-size: 30px;
+            padding-top: 20px;
             font-weight: bold;
         }
 
         .points{
 
             &-amount{
+                font-size: 28px;
                 width: 100%;
                 text-align: center;
             }
@@ -29,20 +36,33 @@
 
     .slides{
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 1;
-
         .slide{
-
             display: flex;
             flex-direction: column;
+            row-gap: 20px;
 
-            .slide-image{
-                width: 200px;
-                height: 200px;
+            .slide-item{
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+                
+                .slide-image{
+                    width: 170px;
+                    height: 150px;
+                }
+
+                .slide-details{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+
+                    font-size: 20px;
+                    font-weight: bold;
+                }
             }
+            
+
         }
 
     }
