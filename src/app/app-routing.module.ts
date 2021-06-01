@@ -6,25 +6,31 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'opt-in',
-    loadChildren: () => import('./opt-in/opt-in.module').then( m => m.OptInPageModule)
+    loadChildren: () =>
+      import('./opt-in/opt-in.module').then((m) => m.OptInPageModule),
+  },
+  {
+    path: 'how-to',
+    loadChildren: () =>
+      import('./how-to/how-to.module').then((m) => m.HowToPageModule),
   },
   // http://localhost:8100/main/tabs/tab1
   {
     path: 'main',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () =>
+      import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },
-
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

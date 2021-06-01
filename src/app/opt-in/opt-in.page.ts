@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-opt-in',
@@ -6,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./opt-in.page.scss'],
 })
 export class OptInPage implements OnInit {
+  public optInTitleText: string = 'YaRock\nהמהפכה הירוקה';
+  public optInButtonText: string = 'סיימתי';
 
-  public optInTitleText:string = "YaRock\nBe greener with us.";
-  public optInButtonText:string = "Start The Journey";
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  public Submit() {
+    this.router.navigate(['/how-to'], { relativeTo: this.route });
   }
-
 }
