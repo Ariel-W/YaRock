@@ -2,6 +2,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class AuthenticationService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        window.alert('You have been successfully registered!');
+        // window.alert('You have been successfully registered!');
         console.log(result.user);
       })
       .catch((error) => {
@@ -38,5 +39,15 @@ export class AuthenticationService {
     // .catch((error) => {
     //   window.alert(error.message);
     // });
+  }
+
+  isLoggedIn() {
+    return this.afAuth.authState.pipe(first()).toPromise();
+  }
+
+  SignOut() {
+    return this.afAuth.signOut().then(() => {
+      this.router.navigate(['']);
+    });
   }
 }

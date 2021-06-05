@@ -1,49 +1,39 @@
 <ion-content [fullscreen]="true">
+  <div class="logout-button"><a (click)="logout()">יציאה</a></div>
   <div class="home-tab">
     <div class="home-tab-content" *ngIf="showHomeContent">
       <div class="green-actions">
-        <div class="green-action-container" *ngFor="let greenAction of greenActions" (click)="actionClicked(greenAction.case)">
-          <img class="green-action-image" src={{greenAction.imgSrc}} alt="greenActionImg" >
+        <div
+          class="green-action-container"
+          *ngFor="let greenAction of greenActions"
+          (click)="actionClicked(greenAction.case)"
+        >
+          <img
+            class="green-action-image"
+            src="{{greenAction.imgSrc}}"
+            alt="greenActionImg"
+          />
           <div class="green-action-title">{{greenAction.title}}</div>
         </div>
       </div>
-      <div class="home-tab-points">
-        <div class="divider"></div>
-        <div class="home-tab-points-content">
-          <img src="assets/images/profile.png" alt="home-profile">
-          <div class="green-coins">
-            <div class="green-coins-amount">49</div>
-            <div class="green-coins-text">Green Coins</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="action-content" *ngIf="showActionContent">
-      <div class="action-content-header">
-        <img class="action-content-image" src={{selectedActionContext.imgSrc}} alt="">
-        <div class="action-content-title bold">{{selectedActionContext.title}}</div>
-        <div class="action-content-points bold"> +5 Points</div>
-      </div>
-      <div class="action-content-divider"></div>
-      <div class="slides">
-        <ion-icon class="slide-arrow-prev" name="arrow-undo" (click)="previousSlide()"></ion-icon>
-        <ion-slides #actionSlider [options]="slideOpts">
-          <ion-slide>
-            <div class="slide-item">
-              <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
-              <div class="slide-details">
-                <div>{{selectedActionContext.sliderText1}}</div>
-              </div>
-            </div>
-            <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
-          </ion-slide>
-  
+      <div class="action-content">
+        <div class="action-content-divider"></div>
+        <div class="slides">
+          <ion-icon
+            class="slide-arrow-prev"
+            name="arrow-undo"
+            (click)="previousSlide()"
+          ></ion-icon>
+          <ion-slides #actionSlider [options]="slideOpts">
             <ion-slide>
-              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
               <div class="slide-item">
-                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[0].sliderImg1Src}}"
+                  alt=""
+                />
                 <div class="slide-details">
-                  <div>{{selectedActionContext.sliderText1}}</div>
+                  <div>{{greenActionsContext[0].sliderText1}}</div>
                 </div>
               </div>
               <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
@@ -52,14 +42,67 @@
             <ion-slide>
               <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
               <div class="slide-item">
-                <img class="slide-image" src={{selectedActionContext.sliderImg1Src}} alt="">
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[1].sliderImg1Src}}"
+                  alt=""
+                />
                 <div class="slide-details">
-                  <div>{{selectedActionContext.sliderText1}}</div>
+                  <div>{{greenActionsContext[1].sliderText1}}</div>
+                </div>
+              </div>
+              <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
+            </ion-slide>
+
+            <ion-slide>
+              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
+              <div class="slide-item">
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[2].sliderImg1Src}}"
+                  alt=""
+                />
+                <div class="slide-details">
+                  <div>{{greenActionsContext[2].sliderText1}}</div>
                 </div>
               </div>
             </ion-slide>
           </ion-slides>
-          <ion-icon class="slide-arrow-next" name="arrow-redo" (click)="nextSlide()"></ion-icon>
+          <ion-icon
+            class="slide-arrow-next"
+            name="arrow-redo"
+            (click)="nextSlide()"
+          ></ion-icon>
+        </div>
+      </div>
+      <!-- <div class="home-tab-points">
+        <div class="divider"></div>
+        <div class="home-tab-points-content">
+          <img src="assets/images/profile.png" alt="home-profile">
+          <div class="green-coins">
+            <div class="green-coins-amount">49</div>
+            <div class="green-coins-text">Green Coins</div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <div class="action-content" *ngIf="showActionContent">
+      <div class="action-content-header">
+        <div class="action-content-title bold">
+          {{selectedActionContext.detailedTitle}}
+        </div>
+        <img
+          class="action-content-image"
+          src="{{selectedActionContext.imgSrc}}"
+          alt=""
+        />
+        <div class="action-content-points bold">
+          {{selectedActionContext.greenPoints}}+
+        </div>
+        <div class="action-content-points-text bold">מטבעות ירוקים</div>
+        <ion-button (click)="report()" class="report-button ls-1"
+          >{{selectedActionContext.reportText}}</ion-button
+        >
       </div>
     </div>
   </div>

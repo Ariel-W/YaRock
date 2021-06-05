@@ -7,6 +7,7 @@
     <div class="login-form">
       <div class="form-inputs">
         <ion-input
+          *ngIf="signUpMode"
           class="ion-text-center custom"
           placeholder="{{namePlaceholder}}"
           [(ngModel)]="name"
@@ -24,9 +25,18 @@
           [(ngModel)]="password"
         ></ion-input>
       </div>
-      <ion-button (click)="signUp()" class="join-button ls-1"
-        >{{joinButtonText}}</ion-button
-      >
+      <div *ngIf="signUpMode" class="login-button">
+        <ion-button (click)="signUp()" class="join-button ls-1"
+          >הרשמה</ion-button
+        >
+        <a (click)="setSignUpMode(false)">להתחברות</a>
+      </div>
+      <div *ngIf="!signUpMode" class="login-button">
+        <ion-button (click)="signIn()" class="join-button ls-1"
+          >כניסה</ion-button
+        >
+        <a (click)="setSignUpMode(true)">להרשמה</a>
+      </div>
       <!-- <ion-button [routerLink]="['/opt-in']" class="join-button ls-1"
         >{{joinButtonText}}</ion-button
       > -->

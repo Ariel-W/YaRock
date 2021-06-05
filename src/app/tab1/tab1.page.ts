@@ -6,8 +6,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonSlides } from '@ionic/angular';
+import { AuthenticationService } from '../services/authentication.service';
 import { EventsHandlerService } from '../services/events-handler.service';
+import { FirestoreService } from '../services/firestore.service';
+import { PhotoService } from '../services/photo.service';
 
 @Component({
   selector: 'app-tab1',
@@ -18,37 +22,56 @@ export class Tab1Page implements OnInit {
   public showHomeContent: boolean = true;
   public showActionContent: boolean = false;
   public selectedActionContext;
+  public currUser;
 
   public greenActions = [
     {
       imgSrc: 'assets/icon/reuse.png',
       title: 'שימוש חוזר',
       case: 'reuse',
+      detailedTitle: 'יצירת עציצים מקרטון חלב',
+      greenPoints: 1,
+      reportText: 'דווח שימוש חוזר',
     },
     {
       imgSrc: 'assets/icon/green-power.png',
       title: 'אנרגיה ירוקה',
       case: 'greenPower',
+      detailedTitle: 'נסיעה ברכב חשמלי',
+      greenPoints: 2,
+      reportText: 'דווח אנרגיה ירוקה',
     },
     {
       imgSrc: 'assets/icon/water.png',
       title: 'מים',
       case: 'water',
+      detailedTitle: 'מקלחת חסכונית במים',
+      greenPoints: 3,
+      reportText: 'דווח חיסכון במים',
     },
     {
       imgSrc: 'assets/icon/recycle.png',
       title: 'מחזור',
       case: 'recycle',
+      detailedTitle: 'מחזור בקבוק פלסטיק',
+      greenPoints: 4,
+      reportText: 'דווח מחזור',
     },
     {
       imgSrc: 'assets/icon/plant-a-tree.png',
       title: 'טבע',
       case: 'plantATree',
+      detailedTitle: 'ניקיון שמורת טבע',
+      greenPoints: 5,
+      reportText: 'דווח שמירה על הטבע',
     },
     {
       imgSrc: 'assets/icon/electricity.png',
       title: 'חשמל',
       case: 'electricity',
+      detailedTitle: 'חסכון בחשמל בבית / מקום העבודה',
+      greenPoints: 1,
+      reportText: 'דווח חיסכון בחשמל',
     },
   ];
 
@@ -57,7 +80,7 @@ export class Tab1Page implements OnInit {
       imgSrc: 'assets/icon/reuse.png',
       title: 'Report Reuse Activity',
       sliderImg1Src: 'assets/images/reuse-slider1.png',
-      sliderText1: 'אירוע מגניב',
+      sliderText1: 'ניקיון חופים - 27.06.2021',
     },
     {
       imgSrc: 'assets/icon/green-power.png',
@@ -98,9 +121,24 @@ export class Tab1Page implements OnInit {
     speed: 400,
   };
 
-  constructor(private eventsHandler: EventsHandlerService) {}
+  constructor(
+    private eventsHandler: EventsHandlerService,
+    private authenticationService: AuthenticationService,
+    private firestoreService: FirestoreService,
+    private router: Router,
+    private route: ActivatedRoute,
+    public photoService: PhotoService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    const loggedInUser = await this.authenticationService.isLoggedIn();
+    if (loggedInUser) {
+      this.firestoreService
+        .getUserByUidObs(loggedInUser.uid)
+        .subscribe((user) => {
+          this.currUser = user;
+        });
+    }
     this.eventsHandler.tab1Selected.subscribe((tab) => {
       this.showHomeContent = true;
       this.showActionContent = false;
@@ -113,27 +151,27 @@ export class Tab1Page implements OnInit {
 
     switch (action) {
       case 'reuse':
-        this.selectedActionContext = this.greenActionsContext[0];
+        this.selectedActionContext = this.greenActions[0];
         break;
 
       case 'greenPower':
-        this.selectedActionContext = this.greenActionsContext[1];
+        this.selectedActionContext = this.greenActions[1];
         break;
 
       case 'water':
-        this.selectedActionContext = this.greenActionsContext[2];
+        this.selectedActionContext = this.greenActions[2];
         break;
 
       case 'recycle':
-        this.selectedActionContext = this.greenActionsContext[3];
+        this.selectedActionContext = this.greenActions[3];
         break;
 
       case 'plantATree':
-        this.selectedActionContext = this.greenActionsContext[4];
+        this.selectedActionContext = this.greenActions[4];
         break;
 
       case 'electricity':
-        this.selectedActionContext = this.greenActionsContext[5];
+        this.selectedActionContext = this.greenActions[5];
         break;
 
       default:
@@ -147,5 +185,23 @@ export class Tab1Page implements OnInit {
 
   previousSlide() {
     this.slides.slidePrev();
+  }
+
+  async report() {
+    if (this.selectedActionContext.case === 'recycle') {
+      await this.photoService.addNewToGallery();
+    }
+    const user: any = await this.firestoreService.getUserByUid(
+      this.currUser.uid
+    );
+    user.greenPoints =
+      user.greenPoints + this.selectedActionContext.greenPoints;
+    await this.firestoreService.createOrUpdateUser(user);
+    this.showActionContent = false;
+    this.showHomeContent = true;
+  }
+
+  logout() {
+    this.authenticationService.SignOut();
   }
 }

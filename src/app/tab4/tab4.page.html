@@ -2,41 +2,71 @@
   <div class="market-tab">
     <div class="market-tab-header">
       <div class="spacer"></div>
-      <div class="market-tab-title ls-1">
-        Green Market
-      </div>
+      <div class="market-tab-title ls-1">שוק ירוק</div>
       <div class="points">
-        <div class="points-amount bold">49</div>
+        <div *ngIf="this.currUser" class="points-amount bold">
+          {{this.currUser.greenPoints}}
+        </div>
         <div>
-          <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+          <img
+            class="green-currency"
+            src="assets/icon/green-currency.png"
+            alt=""
+          />
         </div>
       </div>
     </div>
     <div class="slides">
-      <ion-icon large class="slide-arrow-prev" name="arrow-undo" (click)="previousSlide()"></ion-icon>
+      <ion-icon
+        large
+        class="slide-arrow-prev"
+        name="arrow-undo"
+        (click)="previousSlide()"
+      ></ion-icon>
       <ion-slides #marketSlider [options]="slideOpts">
         <ion-slide *ngFor="let slider of slidesContext">
           <div class="slide">
             <div class="slide-items">
               <div class="slide-item">
-                <img class="slide-image" src={{slider.firstImage}} alt="firstImage">
+                <div class="slide-item-title">{{slider.title}}</div>
+                <img
+                  class="slide-image"
+                  src="{{slider.firstImage}}"
+                  alt="firstImage"
+                />
                 <div class="slide-details">
                   <div>{{slider.firstPoints}}</div>
-                  <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+                  <img
+                    class="green-currency"
+                    src="assets/icon/green-currency.png"
+                    alt=""
+                  />
                 </div>
               </div>
               <div class="slide-item">
-                <img class="slide-image" src={{slider.secondImage}} alt="secondImage">
+                <img
+                  class="slide-image"
+                  src="{{slider.secondImage}}"
+                  alt="secondImage"
+                />
                 <div class="slide-details">
                   <div>{{slider.secondPoints}}</div>
-                  <img class="green-currency" src="assets/icon/green-currency.png" alt="">
+                  <img
+                    class="green-currency"
+                    src="assets/icon/green-currency.png"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
           </div>
         </ion-slide>
       </ion-slides>
-      <ion-icon class="slide-arrow-next" name="arrow-redo" (click)="nextSlide()"></ion-icon>
+      <ion-icon
+        class="slide-arrow-next"
+        name="arrow-redo"
+        (click)="nextSlide()"
+      ></ion-icon>
     </div>
   </div>
 </ion-content>
