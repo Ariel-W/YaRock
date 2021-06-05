@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, Platform } from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { FirestoreService } from '../services/firestore.service';
 
@@ -12,6 +12,7 @@ export class Tab4Page {
   @ViewChild('marketSlider') marketSlider: IonSlides;
 
   public currUser;
+  public subscription;
 
   slidesContext = [
     {
@@ -51,8 +52,20 @@ export class Tab4Page {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private platform: Platform
   ) {}
+
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribeWithPriority(
+      9999,
+      () => {}
+    );
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
 
   async ngOnInit() {
     const loggedInUser = await this.authenticationService.isLoggedIn();
