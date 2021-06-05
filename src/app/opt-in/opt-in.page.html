@@ -1,18 +1,43 @@
 <ion-content>
-  <div class="opt-in ">
+  <div class="opt-in">
     <div class="opt-in-image">
-      <img src="assets/images/login.png" alt="login">
+      <img src="assets/images/login.png" alt="login" />
     </div>
-    <div class="opt-in-title ls-1">
-      {{optInTitleText}}
-    </div>
+    <div class="opt-in-title ls-1">{{optInTitleText}}</div>
     <div class="opt-in-form">
       <div class="form-inputs">
-        <ion-input class="ion-text-center" placeholder="City"></ion-input>
-        <ion-input class="ion-text-center" placeholder="Gender"></ion-input>
-        <ion-input class="ion-text-center" placeholder="Prefered Activity"></ion-input>
+        <ion-input
+          class="ion-text-center"
+          placeholder="עיר מגורים"
+          [(ngModel)]="city"
+        ></ion-input>
+        <ion-input
+          class="ion-text-center"
+          placeholder="גיל"
+          [(ngModel)]="age"
+        ></ion-input>
+        <ion-input
+          class="ion-text-center"
+          placeholder="פעילות ירוקה מועדפת"
+          [(ngModel)]="greenActivity"
+        ></ion-input>
+        <ion-input
+          class="ion-text-center"
+          placeholder="?מי איתי בדרך לחיים הירוקים"
+          [(ngModel)]="greenPartners"
+        ></ion-input>
+        <ion-input
+          class="ion-text-center"
+          placeholder="קוד קבוצה"
+          [(ngModel)]="groupCode"
+        ></ion-input>
       </div>
-      <ion-button [routerLink]="['/main/tabs/tab1']" class="opt-in-button ls-1">{{optInButtonText}}</ion-button>
+      <ion-button (click)="Submit()" class="opt-in-button ls-1"
+        >{{optInButtonText}}</ion-button
+      >
+      <!-- <ion-button [routerLink]="['/main/tabs/tab1']" class="opt-in-button ls-1"
+        >{{optInButtonText}}</ion-button
+      > -->
     </div>
   </div>
 </ion-content>
