@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { first } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,10 @@ import { Observable } from 'rxjs';
 export class FirestoreService {
   public currUserObs: Observable<any>;
 
-  constructor(public afs: AngularFirestore) {}
+  constructor(
+    public afs: AngularFirestore,
+    public storage: AngularFireStorage
+  ) {}
 
   createOrUpdateUser(user: any) {
     // this.afs.collection(collection).add(obj);
@@ -35,6 +39,10 @@ export class FirestoreService {
       .toPromise();
 
     return user;
+  }
+
+  async uploadFile(name: string, file: any) {
+    return this.storage.upload(`files/${name}`, file);
   }
   // async getUserByUid(uid: string) {
   //   const users = await this.afs

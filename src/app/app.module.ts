@@ -14,6 +14,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +34,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
       useClass: IonicRouteStrategy,
     },
     EventsHandlerService,
+    NativeAudio,
   ],
   bootstrap: [AppComponent],
 })

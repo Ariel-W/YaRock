@@ -6,25 +6,41 @@
         <div
           class="green-action-container"
           *ngFor="let greenAction of greenActions"
-          (click)="actionClicked(greenAction.case)"
+          (click)="actionClicked(greenAction)"
         >
-          <img
-            class="green-action-image"
-            src="{{greenAction.imgSrc}}"
-            alt="greenActionImg"
-          />
-          <div class="green-action-title">{{greenAction.title}}</div>
+          <div *ngIf="greenAction.isActive">
+            <img
+              class="green-action-image"
+              src="{{greenAction.imgSrc}}"
+              alt="greenActionImg"
+            />
+            <div class="green-action-title">{{greenAction.title}}</div>
+          </div>
+          <div *ngIf="!greenAction.isActive">
+            <img
+              class="green-action-image-disabled"
+              src="{{greenAction.imgSrc}}"
+              alt="greenActionImg"
+            />
+            <div class="green-action-title">{{greenAction.title}}</div>
+            <div class="green-action-title-small">בקרוב...</div>
+          </div>
         </div>
       </div>
       <div class="action-content">
         <div class="action-content-divider"></div>
+        <div class="events-title">אירועים ירוקים</div>
         <div class="slides">
           <ion-icon
             class="slide-arrow-prev"
             name="arrow-undo"
             (click)="previousSlide()"
           ></ion-icon>
-          <ion-slides #actionSlider [options]="slideOpts">
+          <ion-slides
+            #actionSlider
+            [options]="slideOpts"
+            (click)="clickEvent()"
+          >
             <ion-slide>
               <div class="slide-item">
                 <img
@@ -100,9 +116,22 @@
           {{selectedActionContext.greenPoints}}+
         </div>
         <div class="action-content-points-text bold">מטבעות ירוקים</div>
-        <ion-button (click)="report()" class="report-button ls-1"
-          >{{selectedActionContext.reportText}}</ion-button
-        >
+        <div class="action-content-desc bold">
+          {{selectedActionContext.description}}
+        </div>
+        <div *ngIf="selectedActionContext.case !== 'water'">
+          <ion-button (click)="report()" class="report-button ls-1"
+            >{{selectedActionContext.reportText}}</ion-button
+          >
+        </div>
+        <div *ngIf="selectedActionContext.case == 'water'">
+          <ion-button (click)="stop()" [disabled]="!playingMusic"
+            ><ion-icon name="stop"></ion-icon
+          ></ion-button>
+          <ion-button (click)="play()" [disabled]="playingMusic"
+            ><ion-icon name="play"></ion-icon
+          ></ion-button>
+        </div>
       </div>
     </div>
   </div>
