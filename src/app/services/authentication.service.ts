@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class AuthenticationService {
   public tab1Selected: Subject<string>;
 
   constructor(
+    private toastController: ToastController,
     private router: Router,
     private route: ActivatedRoute,
     public afAuth: AngularFireAuth
@@ -24,8 +26,13 @@ export class AuthenticationService {
         // window.alert('You have been successfully registered!');
         console.log(result.user);
       })
-      .catch((error) => {
-        window.alert(error.message);
+      .catch(async (error) => {
+        const toast = await this.toastController.create({
+          message: error.message,
+          duration: 2000,
+          position: 'top',
+        });
+        toast.present();
       });
   }
 

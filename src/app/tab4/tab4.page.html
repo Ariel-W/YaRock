@@ -27,7 +27,7 @@
         <ion-slide *ngFor="let slider of slidesContext">
           <div class="slide">
             <div class="slide-items">
-              <div class="slide-item">
+              <div class="slide-item" (click)="consumeGift(slider, 'first')">
                 <div class="slide-item-title">{{slider.title}}</div>
                 <img
                   class="slide-image"
@@ -43,7 +43,7 @@
                   />
                 </div>
               </div>
-              <div class="slide-item">
+              <div class="slide-item" (click)="consumeGift(slider, 'second')">
                 <img
                   class="slide-image"
                   src="{{slider.secondImage}}"

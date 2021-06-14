@@ -4,6 +4,7 @@
       <img src="assets/images/login.png" alt="login" />
     </div>
     <div class="opt-in-title ls-1">{{optInTitleText}}</div>
+    <div class="opt-in-subtitle ls-1">{{optInSubTitleText}}</div>
     <div class="opt-in-form">
       <div class="form-inputs">
         <ion-input
@@ -16,21 +17,36 @@
           placeholder="גיל"
           [(ngModel)]="age"
         ></ion-input>
-        <ion-input
+        <!-- <ion-input
           class="ion-text-center"
           placeholder="פעילות ירוקה מועדפת"
           [(ngModel)]="greenActivity"
-        ></ion-input>
-        <ion-input
-          class="ion-text-center"
-          placeholder="?מי איתי בדרך לחיים הירוקים"
-          [(ngModel)]="greenPartners"
-        ></ion-input>
+        ></ion-input> -->
         <ion-input
           class="ion-text-center"
           placeholder="קוד קבוצה"
           [(ngModel)]="groupCode"
         ></ion-input>
+        <ion-select placeholder="פעילות ירוקה מועדפת" class="ion-select" [(ngModel)]="preferredActivity">
+          <ion-select-option class="ion-select" value="1"
+            >אנרגיה ירוקה</ion-select-option
+          >
+          <ion-select-option class="ion-select" value="2"
+            >שימוש חוזר</ion-select-option
+          >
+          <ion-select-option class="ion-select" value="3"
+            >מחזור</ion-select-option
+          >
+          <ion-select-option class="ion-select" value="4"
+            >חסכון במים</ion-select-option
+          >
+          <ion-select-option class="ion-select" value="5"
+            >חסכון בחשמל</ion-select-option
+          >
+          <ion-select-option class="ion-select" value="6"
+            >שמירה על הטבע</ion-select-option
+          >
+        </ion-select>
       </div>
       <ion-button (click)="Submit()" class="opt-in-button ls-1"
         >{{optInButtonText}}</ion-button

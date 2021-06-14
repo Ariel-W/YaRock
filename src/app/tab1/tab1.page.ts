@@ -3,24 +3,34 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
+  ElementRef,
   OnInit,
+  Pipe,
+  PipeTransform,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonSlides, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  IonSlides,
+  ModalController,
+  Platform,
+} from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { EventsHandlerService } from '../services/events-handler.service';
 import { FirestoreService } from '../services/firestore.service';
 import { PhotoService } from '../services/photo.service';
 import { ToastController } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { timeout } from 'rxjs/operators';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page implements OnInit {
+export class Tab1Page implements OnInit, AfterViewInit {
   public showHomeContent: boolean = true;
   public showActionContent: boolean = false;
   public selectedActionContext;
@@ -28,6 +38,12 @@ export class Tab1Page implements OnInit {
   public subscription: any;
   public playingMusic = false;
   public playingMusicStart = 0;
+  public audioDuration = 0;
+  public audioDurationFormatted = '00:00';
+  public audioCountDown: Subscription;
+  public audioSrc;
+  @ViewChild('audioElement', { static: true }) public _audioRef: ElementRef;
+  private audio: HTMLMediaElement;
 
   public greenActions = [
     {
@@ -38,27 +54,6 @@ export class Tab1Page implements OnInit {
       greenPoints: 5,
       description: 'יש להעלות תצלום חשבונית של נסיעה בתחבורה ציבורית מהיום :-)',
       reportText: 'סרוק קבלת תחבורה ציבורית',
-      isActive: true,
-    },
-    {
-      imgSrc: 'assets/icon/water.png',
-      title: 'מים',
-      case: 'water',
-      detailedTitle: 'מקלחת חסכונית במים',
-      description:
-        'יש להפעיל את השיר בכניסה למקלחת ולעצור אותו בסיום המקלחת, האתגר הוא לסיים להתקלח לפני שהשיר נגמר',
-      greenPoints: 1,
-      reportText: 'דווח חיסכון במים',
-      isActive: true,
-    },
-    {
-      imgSrc: 'assets/icon/recycle.png',
-      title: 'מחזור',
-      case: 'recycle',
-      detailedTitle: 'מחזור בקבוק פלסטיק',
-      description: 'יש להעלות סלפי עם בקבוק ומחזורית :-)',
-      greenPoints: 3,
-      reportText: 'דווח מחזור',
       isActive: true,
     },
     {
@@ -79,6 +74,7 @@ export class Tab1Page implements OnInit {
       reportText: 'דווח שמירה על הטבע',
       isActive: false,
     },
+
     {
       imgSrc: 'assets/icon/electricity.png',
       title: 'חשמל',
@@ -87,6 +83,27 @@ export class Tab1Page implements OnInit {
       greenPoints: 1,
       reportText: 'דווח חיסכון בחשמל',
       isActive: false,
+    },
+    {
+      imgSrc: 'assets/icon/water.png',
+      title: 'מים',
+      case: 'water',
+      detailedTitle: 'התקלחת יצאת',
+      description:
+        'בחרנו לך שיר מקלחת ירוק במיוחד, התקלחת יצאת והשיר עדיין מתנגן? זכית!',
+      greenPoints: 1,
+      reportText: 'דווח חיסכון במים',
+      isActive: true,
+    },
+    {
+      imgSrc: 'assets/icon/recycle.png',
+      title: 'מחזור',
+      case: 'recycle',
+      detailedTitle: 'מחזור בקבוק פלסטיק',
+      description: 'בוא נראה אותך בסלפי עם בקבוק ומחזורית',
+      greenPoints: 3,
+      reportText: 'דווח מחזור',
+      isActive: true,
     },
   ];
 
@@ -127,7 +144,8 @@ export class Tab1Page implements OnInit {
     private platform: Platform,
     private nativeAudio: NativeAudio,
     public toastController: ToastController,
-    public photoService: PhotoService
+    public photoService: PhotoService,
+    public alertController: AlertController
   ) {}
 
   async ngOnInit() {
@@ -143,6 +161,13 @@ export class Tab1Page implements OnInit {
       this.showHomeContent = true;
       this.showActionContent = false;
     });
+  }
+
+  public ngAfterViewInit() {
+    this.audio = this._audioRef.nativeElement;
+    this.prepareAudio(
+      'https://yarock-audio.s3.eu-central-1.amazonaws.com/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
+    );
   }
 
   ionViewDidEnter() {
@@ -213,29 +238,56 @@ export class Tab1Page implements OnInit {
         awardPoints = false;
       }
     }
-    // Set the timestamp of the latest complete date of this challenge
-    user[this.selectedActionContext.case] = Date.now();
+
     if (awardPoints) {
-      message = `כל הכבוד!  קיבלת ${this.selectedActionContext.greenPoints} נקודות ירוקות`;
+      const alert = await this.alertController.create({
+        cssClass: 'points-alert',
+        header: 'כל הכבוד',
+        // subHeader: 'Subtitle',
+        message: 'המטבעות הירוקים כבר אצלך בארנק, האתגר הבא כבר מחכה לך',
+        buttons: ['יששש'],
+      });
+
+      await alert.present();
+
+      // message = `כל הכבוד!  קיבלת ${this.selectedActionContext.greenPoints} נקודות ירוקות`;
       user.greenPoints =
         user.greenPoints + this.selectedActionContext.greenPoints;
+      user.totalPoints =
+        user.totalPoints + this.selectedActionContext.greenPoints;
+      // Set the timestamp of the latest complete date of this challenge
+      const currTime = Date.now();
+      user[this.selectedActionContext.case] = currTime;
+      user.completedChallenges = user.completedChallenges || {};
+      user.completedChallenges[currTime] = {
+        gotPoints: true,
+        challenge: this.selectedActionContext.case,
+        timestamp: currTime,
+      };
     } else {
       message = `כל הכבוד על השלמת האתגר<br/>שים לב - ניתן לקבל נק׳ ירוקות על השלמת אתגר אחת ליממה`;
+      const toast = await this.toastController.create({
+        message: message,
+        cssClass: 'text-align: right;',
+        position: 'top',
+        buttons: [
+          {
+            side: 'end',
+            icon: 'star',
+            text: 'סגור',
+          },
+        ],
+      });
+      toast.present();
     }
+    const currTime = Date.now();
+    user.completedChallenges = user.completedChallenges || {};
+    user.completedChallenges[currTime] = {
+      gotPoints: true,
+      challenge: this.selectedActionContext.case,
+      timestamp: currTime,
+    };
     await this.firestoreService.createOrUpdateUser(user);
-    const toast = await this.toastController.create({
-      message: message,
-      cssClass: 'text-align: right;',
-      position: 'top',
-      buttons: [
-        {
-          side: 'end',
-          icon: 'star',
-          text: 'סגור',
-        },
-      ],
-    });
-    toast.present();
     this.showActionContent = false;
     this.showHomeContent = true;
   }
@@ -260,75 +312,174 @@ export class Tab1Page implements OnInit {
     toast.present();
   }
 
-  play() {
-    this.nativeAudio
-      .preloadSimple(
-        'uniqueId1',
-        'assets/audio/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
-      )
-      .then(
-        () => {
-          this.playingMusic = true;
-          this.playingMusicStart = Date.now();
-          this.nativeAudio.play('uniqueId1', async () => {
-            this.playingMusicStart = 0;
-            this.playingMusic = false;
-            const toast = await this.toastController.create({
-              message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
-              position: 'top',
-              buttons: [
-                {
-                  side: 'end',
-                  icon: 'star',
-                  text: 'סגור',
-                },
-              ],
-            });
-            toast.present();
-          });
-        },
-        async (error) => {
-          console.log(error);
-          const toast = await this.toastController.create({
-            message: `לא ניתן לנגן, נא לנסות מאוחר יותר`,
-            position: 'top',
-            duration: 2000,
-          });
-          toast.present();
-        }
-      );
+  prepareAudio(audioSrc: string) {
+    if (this.audio) {
+      this.audio.oncanplaythrough = () => {
+        console.log('oncanplaythrough');
+        this.audioDuration = Math.round(this.audio.duration);
+        this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+      };
+      this.audio.onended = async () => {
+        console.log('onended');
+        this.resetAudio();
+        this.playingMusicStart = 0;
+        this.playingMusic = false;
+        const toast = await this.toastController.create({
+          message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
+          position: 'top',
+          buttons: [
+            {
+              side: 'end',
+              icon: 'star',
+              text: 'סגור',
+            },
+          ],
+        });
+        toast.present();
+      };
+      this.audio.src = audioSrc;
+      this.audio.load();
+    }
   }
 
-  stop() {
-    this.nativeAudio.stop('uniqueId1').then(
-      async () => {
-        if (this.playingMusic) {
-          this.playingMusic = false;
-          this.nativeAudio.unload('uniqueId1').then(
-            () => {},
-            () => {}
-          );
-          const currTime = Date.now();
-          const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
-          if (showerTimeSec < 120) {
-            const toast = await this.toastController.create({
-              message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
-              position: 'top',
-              buttons: [
-                {
-                  side: 'end',
-                  icon: 'star',
-                  text: 'סגור',
-                },
-              ],
-            });
-            toast.present();
-          } else {
-            this.report();
-          }
-        }
-      },
-      () => {}
+  play() {
+    this.playingMusic = true;
+    this.playingMusicStart = Date.now();
+    this.audio.play();
+    this.audioCountDown = timer(0, 1000).subscribe(() => {
+      --this.audioDuration;
+      this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+    });
+  }
+  async stop() {
+    this.resetAudio();
+    if (this.playingMusic) {
+      this.playingMusic = false;
+      const currTime = Date.now();
+      const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
+      if (showerTimeSec < 120) {
+        const toast = await this.toastController.create({
+          message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
+          position: 'top',
+          buttons: [
+            {
+              side: 'end',
+              icon: 'star',
+              text: 'סגור',
+            },
+          ],
+        });
+        toast.present();
+      } else {
+        this.report();
+      }
+    }
+  }
+
+  resetAudio() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.audioDuration = Math.round(this.audio.duration);
+    this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+    if (this.audioCountDown) {
+      this.audioCountDown.unsubscribe();
+      this.audioCountDown = null;
+    }
+  }
+
+  formatDuration(duration: number) {
+    const minutes: number = Math.floor(duration / 60);
+    return (
+      ('00' + minutes).slice(-2) +
+      ':' +
+      ('00' + Math.floor(duration - minutes * 60)).slice(-2)
     );
   }
+
+  // play() {
+  //   this.nativeAudio
+  //     .preloadSimple(
+  //       'uniqueId1',
+  //       'assets/audio/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
+  //     )
+  //     .then(
+  //       () => {
+  //         this.playingMusic = true;
+  //         this.playingMusicStart = Date.now();
+  //         this.audio.play();
+  //         this.nativeAudio.play('uniqueId1', async () => {
+  //           this.playingMusicStart = 0;
+  //           this.playingMusic = false;
+  //           const toast = await this.toastController.create({
+  //             message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
+  //             position: 'top',
+  //             buttons: [
+  //               {
+  //                 side: 'end',
+  //                 icon: 'star',
+  //                 text: 'סגור',
+  //               },
+  //             ],
+  //           });
+  //           toast.present();
+  //         });
+  //       },
+  //       async (error) => {
+  //         console.log(error);
+  //         const toast = await this.toastController.create({
+  //           message: `לא ניתן לנגן, נא לנסות מאוחר יותר`,
+  //           position: 'top',
+  //           duration: 2000,
+  //         });
+  //         toast.present();
+  //       }
+  //     );
+  // }
+
+  // stop() {
+  //   this.nativeAudio.stop('uniqueId1').then(
+  //     async () => {
+  //       if (this.playingMusic) {
+  //         this.playingMusic = false;
+  //         this.nativeAudio.unload('uniqueId1').then(
+  //           () => {},
+  //           () => {}
+  //         );
+  //         const currTime = Date.now();
+  //         const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
+  //         if (showerTimeSec < 120) {
+  //           const toast = await this.toastController.create({
+  //             message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
+  //             position: 'top',
+  //             buttons: [
+  //               {
+  //                 side: 'end',
+  //                 icon: 'star',
+  //                 text: 'סגור',
+  //               },
+  //             ],
+  //           });
+  //           toast.present();
+  //         } else {
+  //           this.report();
+  //         }
+  //       }
+  //     },
+  //     () => {}
+  //   );
+  // }
 }
+
+// @Pipe({
+//   name: 'formatTime',
+// })
+// export class FormatTimePipe implements PipeTransform {
+//   transform(value: number): string {
+//     const minutes: number = Math.floor(value / 60);
+//     return (
+//       ('00' + minutes).slice(-2) +
+//       ':' +
+//       ('00' + Math.floor(value - minutes * 60)).slice(-2)
+//     );
+//   }
+// }

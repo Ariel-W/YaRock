@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonSlides, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  IonSlides,
+  Platform,
+  ToastController,
+} from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { FirestoreService } from '../services/firestore.service';
 
@@ -19,29 +24,37 @@ export class Tab4Page {
       title: 'סקינים לפורטנייט',
       firstImage: 'assets/images/fortnite-03.png',
       firstPoints: 40,
+      firstGift: 'fortnite-01',
       secondImage: 'assets/images/fortnite-02.png',
       secondPoints: 55,
+      secondGift: 'fortnite-02',
     },
     {
       title: 'חולצות ירוקות',
       firstImage: 'assets/images/tshirt-01.png',
-      firstPoints: 15,
+      firstPoints: 1,
+      firstGift: 'shirt-01',
       secondImage: 'assets/images/tshirt-02.png',
       secondPoints: 20,
+      secondGift: 'shirt-02',
     },
     {
       title: 'כוסות רב שימושיות',
       firstImage: 'assets/images/cup-05.png',
       firstPoints: 15,
+      firstGift: 'cup-01',
       secondImage: 'assets/images/cup-01.png',
       secondPoints: 20,
+      secondGift: 'cup-02',
     },
     {
       title: 'סיורים באתרים ירוקים',
       firstImage: 'assets/images/tour-04.png',
       firstPoints: 70,
+      firstGift: 'tour-01',
       secondImage: 'assets/images/tour-03.png',
       secondPoints: 90,
+      secondGift: 'tour-02',
     },
   ];
 
@@ -53,7 +66,9 @@ export class Tab4Page {
   constructor(
     private authenticationService: AuthenticationService,
     private firestoreService: FirestoreService,
-    private platform: Platform
+    private platform: Platform,
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {}
 
   ionViewDidEnter() {
@@ -86,5 +101,40 @@ export class Tab4Page {
     console.log('in prev');
 
     this.marketSlider.slidePrev();
+  }
+
+  async consumeGift(slider: any, num: string) {
+    let requiredPoints = slider.firstPoints;
+    let consumedGift = slider.firstGift;
+    if (num === 'second') {
+      requiredPoints = slider.secondPoints;
+      consumedGift = slider.secondGift;
+    }
+
+    if (this.currUser.greenPoints >= requiredPoints) {
+      this.currUser.greenPoints -= requiredPoints;
+      const currTime = Date.now();
+      this.currUser.consumedGifts = this.currUser.consumedGifts || {};
+      this.currUser.consumedGifts[currTime] = {
+        consumedGift,
+        requiredPoints,
+        timestamp: currTime,
+      };
+      await this.firestoreService.createOrUpdateUser(this.currUser);
+
+      const alert = await this.alertController.create({
+        header: 'מזל טוב',
+        message: 'המתנה בדרך אליך, ניצור קשר בקרוב לפרטי המשלוח',
+        buttons: ['יששש'],
+      });
+      await alert.present();
+    } else {
+      const toast = await this.toastController.create({
+        message: 'אין מספיק מטבעות ירוקים, קדימה לאתגר הבא',
+        duration: 2000,
+        position: 'top',
+      });
+      toast.present();
+    }
   }
 }

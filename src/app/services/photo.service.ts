@@ -69,7 +69,7 @@ export class PhotoService {
           this.downloadURL = fileRef.getDownloadURL();
           this.downloadURL.subscribe((downloadURL) => {
             if (downloadURL) {
-              this.showSuccesfulUploadAlert();
+              // this.showSuccesfulUploadAlert();
             }
             console.log(downloadURL);
           });

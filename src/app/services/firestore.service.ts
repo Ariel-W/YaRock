@@ -29,6 +29,9 @@ export class FirestoreService {
       .collection('users', (ref) => ref.where('groupCode', '==', groupCode))
       .valueChanges();
   }
+  getUsers() {
+    return this.afs.collection('users').valueChanges();
+  }
 
   async getUserByUid(uid: string) {
     const user = await this.afs

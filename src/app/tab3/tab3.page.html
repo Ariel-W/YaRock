@@ -3,55 +3,37 @@
     <div class="league-tab-title bold">ליגה</div>
     <div class="ranking-tables">
       <ion-grid class="individual-rankings">
-        <div class="grid-title">דירוג אישי</div>
+        <div *ngIf="currUser" class="grid-title">
+          דירוג אישי - {{currUser.groupCode}}
+        </div>
         <ion-row class="ion-align-items-center header bold">
-          <ion-col class="ranking">
-            דירוג
-          </ion-col>
-          <ion-col class="name">
-            שם
-          </ion-col>
-          <ion-col>
-            נקודות
-          </ion-col>        
+          <ion-col class="ranking"> דירוג </ion-col>
+          <ion-col class="name"> שם </ion-col>
+          <ion-col> נקודות </ion-col>
         </ion-row>
-        <ion-row *ngFor="let individual of individualRankings" class="ion-align-items-center"
-        [ngClass]="{'first-rank': individual.rank === 1 , 'second-rank': individual.rank === 2 , 'third-rank': individual.rank === 3}"  >
-          <ion-col class="ranking" >
-            {{individual.rank}}
-          </ion-col>
-          <ion-col class="name">
-            {{individual.name}}
-          </ion-col>
-          <ion-col>
-            {{individual.greenPoints}}
-          </ion-col>
+        <ion-row
+          *ngFor="let individual of individualRankings"
+          class="ion-align-items-center"
+        >
+          <ion-col class="ranking"> {{individual.rank}} </ion-col>
+          <ion-col class="name"> {{individual.name}} </ion-col>
+          <ion-col> {{individual.totalPoints}} </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-grid class="group-rankings" >
+      <ion-grid class="group-rankings">
         <div class="grid-title">דירוג קבוצתי</div>
         <ion-row class="ion-align-items-center header bold">
-          <ion-col class="ranking">
-            דירוג
-          </ion-col>
-          <ion-col class="name">
-            שם
-          </ion-col>
-          <ion-col>
-            נקודות
-          </ion-col>        
+          <ion-col class="ranking"> דירוג </ion-col>
+          <ion-col class="name"> קבוצה </ion-col>
+          <ion-col> נקודות </ion-col>
         </ion-row>
-        <ion-row *ngFor="let group of groupRankings" class="ion-align-items-center"
-        [ngClass]="{'first-rank': group.rank === 1 , 'second-rank': group.rank === 2 , 'third-rank': group.rank === 3}"  >
-          <ion-col class="ranking">
-            {{group.rank}}
-          </ion-col>
-          <ion-col class="name">
-            {{group.name}}
-          </ion-col>
-          <ion-col>
-            {{group.greenPoints}}
-          </ion-col>
+        <ion-row
+          *ngFor="let group of groupRankings"
+          class="ion-align-items-center"
+        >
+          <ion-col class="ranking"> {{group.rank}} </ion-col>
+          <ion-col class="name"> {{group.name}} </ion-col>
+          <ion-col> {{group.totalPoints}} </ion-col>
         </ion-row>
       </ion-grid>
     </div>

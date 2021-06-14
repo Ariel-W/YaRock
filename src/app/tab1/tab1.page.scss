@@ -1,28 +1,27 @@
 @mixin on-circle($item-count, $circle-size, $item-size) {
   position: relative;
-  width:  $circle-size;
+  width: $circle-size;
   height: $circle-size;
   padding: 0;
-  border-radius: 50%; 
-  list-style: none;       
-  
+  border-radius: 50%;
+  list-style: none;
+
   > * {
     display: block;
     position: absolute;
-    top:  50%; 
+    top: 50%;
     left: 50%;
-    width:  $item-size;
+    width: $item-size;
     height: $item-size;
     margin: -($item-size / 2);
-  
+
     $angle: (360 / $item-count);
     $rot: -1;
 
     @for $i from 1 through $item-count {
       &:nth-of-type(#{$i}) {
-        transform: 
-          rotate($rot * 1deg) 
-          translate($circle-size / 2) 
+        transform: rotate($rot * 1deg)
+          translate($circle-size / 2)
           rotate($rot * -1deg);
       }
 
@@ -49,28 +48,25 @@
       // grid-template-columns: 33% 33% 33%;
       // justify-content: center;
       // align-items: center;
-      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 20vw); 
+      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 22vw);
       flex: 1;
 
       align-self: center;
 
       .green-action-container {
-        
-        .green-action{
+        .green-action {
           position: relative;
           // display: flex;
           // flex-direction: column;
           // align-items: center;
           .green-action-image {
-  
           }
-  
+
           .green-action-image-disabled {
-  
             opacity: 0.4;
             filter: alpha(opacity=40); /* msie */
           }
-  
+
           .green-action-title {
             direction: rtl;
             font-size: 16px;
@@ -89,7 +85,6 @@
             color: var(--ion-color-secondary);
           }
         }
-
       }
     }
 
@@ -147,6 +142,11 @@
       font-size: 20px;
       text-align: center;
       color: var(--ion-color-primary);
+    }
+
+    &-desc {
+      width: 75vw;
+      text-align: center;
     }
 
     &-header {
@@ -227,4 +227,23 @@
       }
     }
   }
+
+  .water {
+    margin-top: 30px;
+  }
+  .timer {
+    font-size: 5vw;
+    color: green;
+  }
+  .currency-image {
+    width: 9vw;
+  }
+}
+
+.ion-alert {
+  // background-image: url("/assets/images/Yarock branding_02-06.png");
+  --background: #ffffff url("../../assets/images/Yarock branding_02-06.png")
+    no-repeat center !important;
+  height: 200px;
+  background-color: white;
 }
