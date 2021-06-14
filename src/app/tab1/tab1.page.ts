@@ -238,8 +238,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
         awardPoints = false;
       }
     }
-    // Set the timestamp of the latest complete date of this challenge
-    user[this.selectedActionContext.case] = Date.now();
+
     if (awardPoints) {
       const alert = await this.alertController.create({
         cssClass: 'points-alert',
@@ -256,6 +255,15 @@ export class Tab1Page implements OnInit, AfterViewInit {
         user.greenPoints + this.selectedActionContext.greenPoints;
       user.totalPoints =
         user.totalPoints + this.selectedActionContext.greenPoints;
+      // Set the timestamp of the latest complete date of this challenge
+      const currTime = Date.now();
+      user[this.selectedActionContext.case] = currTime;
+      user.completedChallenges = user.completedChallenges || {};
+      user.completedChallenges[currTime] = {
+        gotPoints: true,
+        challenge: this.selectedActionContext.case,
+        timestamp: currTime,
+      };
     } else {
       message = `כל הכבוד על השלמת האתגר<br/>שים לב - ניתן לקבל נק׳ ירוקות על השלמת אתגר אחת ליממה`;
       const toast = await this.toastController.create({
@@ -272,6 +280,13 @@ export class Tab1Page implements OnInit, AfterViewInit {
       });
       toast.present();
     }
+    const currTime = Date.now();
+    user.completedChallenges = user.completedChallenges || {};
+    user.completedChallenges[currTime] = {
+      gotPoints: true,
+      challenge: this.selectedActionContext.case,
+      timestamp: currTime,
+    };
     await this.firestoreService.createOrUpdateUser(user);
     this.showActionContent = false;
     this.showHomeContent = true;

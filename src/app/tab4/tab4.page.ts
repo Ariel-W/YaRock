@@ -32,7 +32,7 @@ export class Tab4Page {
     {
       title: 'חולצות ירוקות',
       firstImage: 'assets/images/tshirt-01.png',
-      firstPoints: 15,
+      firstPoints: 1,
       firstGift: 'shirt-01',
       secondImage: 'assets/images/tshirt-02.png',
       secondPoints: 20,
@@ -114,7 +114,13 @@ export class Tab4Page {
     if (this.currUser.greenPoints >= requiredPoints) {
       this.currUser.greenPoints -= requiredPoints;
       const currTime = Date.now();
-      this.currUser.consumedGifts[currTime] = { consumedGift, requiredPoints };
+      this.currUser.consumedGifts = this.currUser.consumedGifts || {};
+      this.currUser.consumedGifts[currTime] = {
+        consumedGift,
+        requiredPoints,
+        timestamp: currTime,
+      };
+      await this.firestoreService.createOrUpdateUser(this.currUser);
 
       const alert = await this.alertController.create({
         header: 'מזל טוב',
