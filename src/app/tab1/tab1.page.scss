@@ -49,14 +49,14 @@
       // grid-template-columns: 33% 33% 33%;
       // justify-content: center;
       // align-items: center;
-      @include on-circle($item-count: 6, $circle-size: 60vw, $item-size: 20vw); 
+      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 20vw); 
       flex: 1;
 
       align-self: center;
 
       .green-action-container {
         
-        .test{
+        .green-action{
           position: relative;
           // display: flex;
           // flex-direction: column;
@@ -76,11 +76,13 @@
             font-size: 16px;
             text-align: center;
             color: var(--ion-color-secondary);
+            min-width: 75px;
           }
           .green-action-title-small {
             position: absolute;
-            bottom: 60px;
-            right: 30px;
+            bottom: 50px;
+            right: 5px;
+            width: 100%;
             direction: rtl;
             font-size: 14px;
             text-align: center;
@@ -220,7 +222,7 @@
       .slide-image {
         max-width: 75%;
         @media screen and(max-width:360px) {
-          max-width: 95%;
+          // max-width: 95%;
         }
       }
     }
