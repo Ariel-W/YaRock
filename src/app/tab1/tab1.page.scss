@@ -1,3 +1,36 @@
+@mixin on-circle($item-count, $circle-size, $item-size) {
+  position: relative;
+  width:  $circle-size;
+  height: $circle-size;
+  padding: 0;
+  border-radius: 50%; 
+  list-style: none;       
+  
+  > * {
+    display: block;
+    position: absolute;
+    top:  50%; 
+    left: 50%;
+    width:  $item-size;
+    height: $item-size;
+    margin: -($item-size / 2);
+  
+    $angle: (360 / $item-count);
+    $rot: -1;
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform: 
+          rotate($rot * 1deg) 
+          translate($circle-size / 2) 
+          rotate($rot * -1deg);
+      }
+
+      $rot: $rot + $angle;
+    }
+  }
+}
+
 .logout-button {
   direction: rtl;
 }
@@ -12,11 +45,14 @@
     height: 100%;
 
     .green-actions {
-      display: grid;
-      grid-template-columns: 33% 33% 33%;
-      justify-content: center;
-      align-items: center;
+      // display: grid;
+      // grid-template-columns: 33% 33% 33%;
+      // justify-content: center;
+      // align-items: center;
+      @include on-circle($item-count: 6, $circle-size: 70vw, $item-size: 20vw); 
       flex: 1;
+
+      align-self: center;
 
       .green-action-container {
         display: flex;
@@ -177,11 +213,10 @@
       }
 
       .slide-image {
+        max-width: 75%;
         @media screen and(max-width:360px) {
-          max-width: 170px;
+          max-width: 100%;
         }
-        // width: 200px;
-        // height: 200px;
       }
     }
   }
