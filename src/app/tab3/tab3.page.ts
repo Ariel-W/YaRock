@@ -1,59 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { AuthenticationService } from '../services/authentication.service';
+import { FirestoreService } from '../services/firestore.service';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
   public subscription: any;
+  public loggedInUser: any = {};
+  public currUser: any;
 
   public individualRankings = [
     {
       rank: 1,
       name: 'משה מכלוף',
-      greenPoints: 380,
+      totalPoints: 380,
     },
     {
       rank: 2,
       name: 'אריאל וויס',
-      greenPoints: 200,
+      totalPoints: 200,
     },
     {
       rank: 3,
       name: 'אלכס חורושין',
-      greenPoints: 190,
+      totalPoints: 190,
     },
     {
       rank: 4,
       name: 'יהורם גאון',
-      greenPoints: 180,
+      totalPoints: 180,
     },
     {
       rank: 5,
       name: 'יוסף שילוח',
-      greenPoints: 170,
+      totalPoints: 170,
     },
     {
       rank: 6,
       name: 'דנה וויס',
-      greenPoints: 160,
+      totalPoints: 160,
     },
     {
       rank: 7,
       name: 'ציפי לייבוביץ',
-      greenPoints: 155,
+      totalPoints: 155,
     },
     {
       rank: 8,
       name: 'חיים גולן',
-      greenPoints: 150,
+      totalPoints: 150,
     },
     {
       rank: 9,
       name: 'אבנר כץ',
-      greenPoints: 100,
+      totalPoints: 100,
     },
   ];
 
@@ -61,51 +65,98 @@ export class Tab3Page {
     {
       rank: 1,
       name: 'העלים החומים',
-      greenPoints: 3390,
+      totalPoints: 3390,
     },
     {
       rank: 2,
       name: 'ממחזרי חדרה',
-      greenPoints: 2500,
+      totalPoints: 2500,
     },
     {
       rank: 3,
       name: 'ירוק עולה',
-      greenPoints: 1180,
+      totalPoints: 1180,
     },
     {
       rank: 4,
       name: 'העלים החומים',
-      greenPoints: 1170,
+      totalPoints: 1170,
     },
     {
       rank: 5,
       name: 'ממחזרי חדרה',
-      greenPoints: 1160,
+      totalPoints: 1160,
     },
     {
       rank: 6,
       name: 'ירוק עולה',
-      greenPoints: 1100,
+      totalPoints: 1100,
     },
     {
       rank: 7,
       name: 'העלים החומים',
-      greenPoints: 1070,
+      totalPoints: 1070,
     },
     {
       rank: 8,
       name: 'ממחזרי חדרה',
-      greenPoints: 1000,
+      totalPoints: 1000,
     },
     {
       rank: 9,
       name: 'ירוק עולה',
-      greenPoints: 870,
+      totalPoints: 870,
     },
   ];
 
-  constructor(private platform: Platform) {}
+  constructor(
+    private platform: Platform,
+    private firestoreService: FirestoreService,
+    private authenticationService: AuthenticationService
+  ) {}
+
+  async ngOnInit() {
+    this.loggedInUser = await this.authenticationService.isLoggedIn();
+    this.firestoreService.getUsers().subscribe((users) => {
+      this.currUser = users.find(
+        (user: any) => user.uid === this.loggedInUser.uid
+      );
+      // calculate individual rankings
+      let myGroupUsers: any = [...users];
+      myGroupUsers = myGroupUsers.filter(
+        (user: any) => user.groupCode === this.currUser.groupCode
+      );
+      myGroupUsers = myGroupUsers.sort(
+        (user1: any, user2: any) => user2.totalPoints - user1.totalPoints
+      );
+
+      for (let index = 0; index < myGroupUsers.length; index++) {
+        myGroupUsers[index].rank = index + 1;
+      }
+      this.individualRankings = myGroupUsers;
+
+      // Calculate group rankings
+      let groups: any = [];
+      users.forEach((user: any) => {
+        groups[user.groupCode] = groups[user.groupCode] || {
+          totalPoints: 0,
+          name: user.groupCode,
+        };
+        groups[user.groupCode].totalPoints += user.totalPoints;
+      });
+      const groupKyes: string[] = Object.keys(groups);
+      let groupsArr = [];
+      groupKyes.forEach((groupKey) => groupsArr.push(groups[groupKey]));
+      groupsArr = groupsArr.sort(
+        (group1: any, group2: any) => group2.totalPoints - group1.totalPoints
+      );
+
+      for (let index = 0; index < groupsArr.length; index++) {
+        groupsArr[index].rank = index + 1;
+      }
+      this.groupRankings = groupsArr;
+    });
+  }
 
   ionViewDidEnter() {
     this.subscription = this.platform.backButton.subscribeWithPriority(
@@ -118,3 +169,5 @@ export class Tab3Page {
     this.subscription.unsubscribe();
   }
 }
+// [ngClass] =
+//   "{'first-rank': group.rank === 1 , 'second-rank': group.rank === 2 , 'third-rank': group.rank === 3}";

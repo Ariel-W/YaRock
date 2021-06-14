@@ -57,11 +57,17 @@ export class Tab5Page {
   }
 
   subscribeToGroupCode(groupCode) {
-    this.firestoreService.getUsersByGroupCode(groupCode).subscribe((users) => {
-      this.groupUsers = users.filter(
-        (user: any) => user.uid !== this.currUser.uid
-      );
-    });
+    if (!groupCode || groupCode === '') {
+      this.groupUsers = [{ name: '-- ללא קבוצה --' }];
+    } else {
+      this.firestoreService
+        .getUsersByGroupCode(groupCode)
+        .subscribe((users) => {
+          this.groupUsers = users.filter(
+            (user: any) => user.uid !== this.currUser.uid
+          );
+        });
+    }
   }
 
   async updateGroupCode() {

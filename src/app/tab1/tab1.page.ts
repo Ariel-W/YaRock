@@ -10,7 +10,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonSlides, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  IonSlides,
+  ModalController,
+  Platform,
+} from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { EventsHandlerService } from '../services/events-handler.service';
 import { FirestoreService } from '../services/firestore.service';
@@ -52,6 +57,34 @@ export class Tab1Page implements OnInit, AfterViewInit {
       isActive: true,
     },
     {
+      imgSrc: 'assets/icon/reuse.png',
+      title: 'שימוש חוזר',
+      case: 'reuse',
+      detailedTitle: 'יצירת עציצים מקרטון חלב',
+      greenPoints: 1,
+      reportText: 'דווח שימוש חוזר',
+      isActive: false,
+    },
+    {
+      imgSrc: 'assets/icon/plant-a-tree.png',
+      title: 'טבע',
+      case: 'plantATree',
+      detailedTitle: 'ניקיון שמורת טבע',
+      greenPoints: 5,
+      reportText: 'דווח שמירה על הטבע',
+      isActive: false,
+    },
+
+    {
+      imgSrc: 'assets/icon/electricity.png',
+      title: 'חשמל',
+      case: 'electricity',
+      detailedTitle: 'חסכון בחשמל בבית / מקום העבודה',
+      greenPoints: 1,
+      reportText: 'דווח חיסכון בחשמל',
+      isActive: false,
+    },
+    {
       imgSrc: 'assets/icon/water.png',
       title: 'מים',
       case: 'water',
@@ -71,33 +104,6 @@ export class Tab1Page implements OnInit, AfterViewInit {
       greenPoints: 3,
       reportText: 'דווח מחזור',
       isActive: true,
-    },
-    {
-      imgSrc: 'assets/icon/reuse.png',
-      title: 'שימוש חוזר',
-      case: 'reuse',
-      detailedTitle: 'יצירת עציצים מקרטון חלב',
-      greenPoints: 1,
-      reportText: 'דווח שימוש חוזר',
-      isActive: false,
-    },
-    {
-      imgSrc: 'assets/icon/plant-a-tree.png',
-      title: 'טבע',
-      case: 'plantATree',
-      detailedTitle: 'ניקיון שמורת טבע',
-      greenPoints: 5,
-      reportText: 'דווח שמירה על הטבע',
-      isActive: false,
-    },
-    {
-      imgSrc: 'assets/icon/electricity.png',
-      title: 'חשמל',
-      case: 'electricity',
-      detailedTitle: 'חסכון בחשמל בבית / מקום העבודה',
-      greenPoints: 1,
-      reportText: 'דווח חיסכון בחשמל',
-      isActive: false,
     },
   ];
 
@@ -138,7 +144,8 @@ export class Tab1Page implements OnInit, AfterViewInit {
     private platform: Platform,
     private nativeAudio: NativeAudio,
     public toastController: ToastController,
-    public photoService: PhotoService
+    public photoService: PhotoService,
+    public alertController: AlertController
   ) {}
 
   async ngOnInit() {
@@ -234,26 +241,38 @@ export class Tab1Page implements OnInit, AfterViewInit {
     // Set the timestamp of the latest complete date of this challenge
     user[this.selectedActionContext.case] = Date.now();
     if (awardPoints) {
-      message = `כל הכבוד!  קיבלת ${this.selectedActionContext.greenPoints} נקודות ירוקות`;
+      const alert = await this.alertController.create({
+        cssClass: 'points-alert',
+        header: 'כל הכבוד',
+        // subHeader: 'Subtitle',
+        message: 'המטבעות הירוקים כבר אצלך בארנק, האתגר הבא כבר מחכה לך',
+        buttons: ['יששש'],
+      });
+
+      await alert.present();
+
+      // message = `כל הכבוד!  קיבלת ${this.selectedActionContext.greenPoints} נקודות ירוקות`;
       user.greenPoints =
         user.greenPoints + this.selectedActionContext.greenPoints;
+      user.totalPoints =
+        user.totalPoints + this.selectedActionContext.greenPoints;
     } else {
       message = `כל הכבוד על השלמת האתגר<br/>שים לב - ניתן לקבל נק׳ ירוקות על השלמת אתגר אחת ליממה`;
+      const toast = await this.toastController.create({
+        message: message,
+        cssClass: 'text-align: right;',
+        position: 'top',
+        buttons: [
+          {
+            side: 'end',
+            icon: 'star',
+            text: 'סגור',
+          },
+        ],
+      });
+      toast.present();
     }
     await this.firestoreService.createOrUpdateUser(user);
-    const toast = await this.toastController.create({
-      message: message,
-      cssClass: 'text-align: right;',
-      position: 'top',
-      buttons: [
-        {
-          side: 'end',
-          icon: 'star',
-          text: 'סגור',
-        },
-      ],
-    });
-    toast.present();
     this.showActionContent = false;
     this.showHomeContent = true;
   }

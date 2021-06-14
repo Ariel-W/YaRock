@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { FirestoreService } from '../services/firestore.service';
 
@@ -23,7 +24,8 @@ export class OptInPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private firestoreService: FirestoreService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {}
@@ -31,17 +33,22 @@ export class OptInPage implements OnInit {
   public async Submit() {
     const loggedInUser = await this.authenticationService.isLoggedIn();
     if (!loggedInUser) {
-      alert('שגיאה, אנא נסה שוב מאוחר יותר');
+      const toast = await this.toastController.create({
+        message: 'שגיאה, אנא נסה שוב מאוחר יותר',
+        duration: 2000,
+        position: 'top',
+      });
+      toast.present();
     }
     const user: any = await this.firestoreService.getUserByUid(
       loggedInUser.uid
     );
+    if (!this.groupCode) {
+      this.groupCode = loggedInUser.displayName.replace(' ', '-');
+    }
     user.city = this.city || null;
     user.age = this.age || null;
     user.greenActivity = this.preferredActivity || null;
-    user.greenPartners = this.greenPartners || null;
-    user.groupCode = this.groupCode || null;
-    alert(this.preferredActivity);
     await this.firestoreService.createOrUpdateUser(user);
     this.router.navigate(['/how-to'], { relativeTo: this.route });
   }
