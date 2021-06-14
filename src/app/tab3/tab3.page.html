@@ -1,8 +1,59 @@
 <ion-content [fullscreen]="true">
   <div class="league-tab">
-    <div class="coming-soon">
-      <img src="assets/images/green-earth.png" alt="comming-soon">
-      <div class="bold">Comming Soon...</div>
+    <div class="league-tab-title bold">ליגה</div>
+    <div class="ranking-tables">
+      <ion-grid class="individual-rankings">
+        <div class="grid-title">דירוג אישי</div>
+        <ion-row class="ion-align-items-center header bold">
+          <ion-col class="ranking">
+            דירוג
+          </ion-col>
+          <ion-col class="name">
+            שם
+          </ion-col>
+          <ion-col>
+            נקודות
+          </ion-col>        
+        </ion-row>
+        <ion-row *ngFor="let individual of individualRankings" class="ion-align-items-center"
+        [ngClass]="{'first-rank': individual.rank === 1 , 'second-rank': individual.rank === 2 , 'third-rank': individual.rank === 3}"  >
+          <ion-col class="ranking" >
+            {{individual.rank}}
+          </ion-col>
+          <ion-col class="name">
+            {{individual.name}}
+          </ion-col>
+          <ion-col>
+            {{individual.greenPoints}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid class="group-rankings" >
+        <div class="grid-title">דירוג קבוצתי</div>
+        <ion-row class="ion-align-items-center header bold">
+          <ion-col class="ranking">
+            דירוג
+          </ion-col>
+          <ion-col class="name">
+            שם
+          </ion-col>
+          <ion-col>
+            נקודות
+          </ion-col>        
+        </ion-row>
+        <ion-row *ngFor="let group of groupRankings" class="ion-align-items-center"
+        [ngClass]="{'first-rank': group.rank === 1 , 'second-rank': group.rank === 2 , 'third-rank': group.rank === 3}"  >
+          <ion-col class="ranking">
+            {{group.rank}}
+          </ion-col>
+          <ion-col class="name">
+            {{group.name}}
+          </ion-col>
+          <ion-col>
+            {{group.greenPoints}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
   </div>
 </ion-content>
