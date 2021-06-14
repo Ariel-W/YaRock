@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
 import { FirestoreService } from '../services/firestore.service';
 
@@ -11,6 +12,7 @@ export class Tab5Page {
   public currUser;
   public groupUsers;
   public groupCode;
+  public subscription;
 
   public yarokBands = [
     {
@@ -26,7 +28,8 @@ export class Tab5Page {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private platform: Platform
   ) {}
 
   async ngOnInit() {
@@ -40,6 +43,17 @@ export class Tab5Page {
           this.subscribeToGroupCode(user.groupCode);
         });
     }
+  }
+
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribeWithPriority(
+      9999,
+      () => {}
+    );
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
   }
 
   subscribeToGroupCode(groupCode) {
