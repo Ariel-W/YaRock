@@ -8,22 +8,24 @@
           *ngFor="let greenAction of greenActions"
           (click)="actionClicked(greenAction)"
         >
-          <div *ngIf="greenAction.isActive">
-            <img
-              class="green-action-image"
-              src="{{greenAction.imgSrc}}"
-              alt="greenActionImg"
-            />
-            <div class="green-action-title">{{greenAction.title}}</div>
-          </div>
-          <div *ngIf="!greenAction.isActive">
-            <img
-              class="green-action-image-disabled"
-              src="{{greenAction.imgSrc}}"
-              alt="greenActionImg"
-            />
-            <div class="green-action-title">{{greenAction.title}}</div>
-            <div class="green-action-title-small">בקרוב...</div>
+          <div class="test">
+            <div *ngIf="greenAction.isActive">
+              <img
+                class="green-action-image"
+                src="{{greenAction.imgSrc}}"
+                alt="greenActionImg"
+              />
+              <div class="green-action-title">{{greenAction.title}}</div>
+            </div>
+            <div *ngIf="!greenAction.isActive">
+              <img
+                class="green-action-image-disabled"
+                src="{{greenAction.imgSrc}}"
+                alt="greenActionImg"
+              />
+              <div class="green-action-title">{{greenAction.title}}</div>
+              <div class="green-action-title-small">בקרוב...</div>
+            </div>
           </div>
         </div>
       </div>
@@ -52,11 +54,9 @@
                   <div>{{greenActionsContext[0].sliderText1}}</div>
                 </div>
               </div>
-              <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
             </ion-slide>
 
             <ion-slide>
-              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
               <div class="slide-item">
                 <img
                   class="slide-image"
@@ -67,11 +67,9 @@
                   <div>{{greenActionsContext[1].sliderText1}}</div>
                 </div>
               </div>
-              <!-- <ion-icon class="slide-arrow" name="arrow-redo" (click)="nextSlide()"></ion-icon> -->
             </ion-slide>
 
             <ion-slide>
-              <!-- <ion-icon class="slide-arrow" name="arrow-undo" (click)="previousSlide()"></ion-icon> -->
               <div class="slide-item">
                 <img
                   class="slide-image"
