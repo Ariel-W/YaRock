@@ -9,13 +9,13 @@ import { FirestoreService } from '../services/firestore.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  public loginTitleText: string = 'YaRock\nהצטרפו למהפה הירוקה';
+  public loginTitleText: string = 'YaRock\nהמהפה הירוקה';
   public joinButtonText: string = 'הרשמה';
   public namePlaceholder: string = 'שם מלא';
   public name: string;
   public email: string;
   public password: string;
-  public signUpMode: boolean = false;
+  public signUpMode: boolean = true;
 
   constructor(
     private router: Router,

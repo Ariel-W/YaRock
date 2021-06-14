@@ -14,6 +14,15 @@
     margin-bottom: 20px;
   }
 
+  &-subtitle {
+    color: black;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    white-space: pre;
+    padding-top: 20px;
+  }
+
   &-form {
     display: flex;
     flex-direction: column;

@@ -54,4 +54,8 @@ export class Tab5Page {
     this.currUser.groupCode = this.groupCode;
     await this.firestoreService.createOrUpdateUser(this.currUser);
   }
+
+  logout() {
+    this.authenticationService.SignOut();
+  }
 }
