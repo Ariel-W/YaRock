@@ -38,7 +38,7 @@ export class OptInPage implements OnInit {
     );
     user.city = this.city || null;
     user.age = this.age || null;
-    user.greenActivity = this.greenActivity || null;
+    user.greenActivity = this.preferredActivity || null;
     user.greenPartners = this.greenPartners || null;
     user.groupCode = this.groupCode || null;
     alert(this.preferredActivity);

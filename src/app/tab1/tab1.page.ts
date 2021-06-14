@@ -3,7 +3,10 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
+  ElementRef,
   OnInit,
+  Pipe,
+  PipeTransform,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,13 +17,15 @@ import { FirestoreService } from '../services/firestore.service';
 import { PhotoService } from '../services/photo.service';
 import { ToastController } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { timeout } from 'rxjs/operators';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page implements OnInit {
+export class Tab1Page implements OnInit, AfterViewInit {
   public showHomeContent: boolean = true;
   public showActionContent: boolean = false;
   public selectedActionContext;
@@ -28,6 +33,12 @@ export class Tab1Page implements OnInit {
   public subscription: any;
   public playingMusic = false;
   public playingMusicStart = 0;
+  public audioDuration = 0;
+  public audioDurationFormatted = '00:00';
+  public audioCountDown: Subscription;
+  public audioSrc;
+  @ViewChild('audioElement', { static: true }) public _audioRef: ElementRef;
+  private audio: HTMLMediaElement;
 
   public greenActions = [
     {
@@ -44,9 +55,9 @@ export class Tab1Page implements OnInit {
       imgSrc: 'assets/icon/water.png',
       title: 'מים',
       case: 'water',
-      detailedTitle: 'מקלחת חסכונית במים',
+      detailedTitle: 'התקלחת יצאת',
       description:
-        'יש להפעיל את השיר בכניסה למקלחת ולעצור אותו בסיום המקלחת, האתגר הוא לסיים להתקלח לפני שהשיר נגמר',
+        'בחרנו לך שיר מקלחת ירוק במיוחד, התקלחת יצאת והשיר עדיין מתנגן? זכית!',
       greenPoints: 1,
       reportText: 'דווח חיסכון במים',
       isActive: true,
@@ -56,7 +67,7 @@ export class Tab1Page implements OnInit {
       title: 'מחזור',
       case: 'recycle',
       detailedTitle: 'מחזור בקבוק פלסטיק',
-      description: 'יש להעלות סלפי עם בקבוק ומחזורית :-)',
+      description: 'בוא נראה אותך בסלפי עם בקבוק ומחזורית',
       greenPoints: 3,
       reportText: 'דווח מחזור',
       isActive: true,
@@ -143,6 +154,13 @@ export class Tab1Page implements OnInit {
       this.showHomeContent = true;
       this.showActionContent = false;
     });
+  }
+
+  public ngAfterViewInit() {
+    this.audio = this._audioRef.nativeElement;
+    this.prepareAudio(
+      'https://yarock-audio.s3.eu-central-1.amazonaws.com/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
+    );
   }
 
   ionViewDidEnter() {
@@ -260,75 +278,174 @@ export class Tab1Page implements OnInit {
     toast.present();
   }
 
-  play() {
-    this.nativeAudio
-      .preloadSimple(
-        'uniqueId1',
-        'assets/audio/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
-      )
-      .then(
-        () => {
-          this.playingMusic = true;
-          this.playingMusicStart = Date.now();
-          this.nativeAudio.play('uniqueId1', async () => {
-            this.playingMusicStart = 0;
-            this.playingMusic = false;
-            const toast = await this.toastController.create({
-              message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
-              position: 'top',
-              buttons: [
-                {
-                  side: 'end',
-                  icon: 'star',
-                  text: 'סגור',
-                },
-              ],
-            });
-            toast.present();
-          });
-        },
-        async (error) => {
-          console.log(error);
-          const toast = await this.toastController.create({
-            message: `לא ניתן לנגן, נא לנסות מאוחר יותר`,
-            position: 'top',
-            duration: 2000,
-          });
-          toast.present();
-        }
-      );
+  prepareAudio(audioSrc: string) {
+    if (this.audio) {
+      this.audio.oncanplaythrough = () => {
+        console.log('oncanplaythrough');
+        this.audioDuration = Math.round(this.audio.duration);
+        this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+      };
+      this.audio.onended = async () => {
+        console.log('onended');
+        this.resetAudio();
+        this.playingMusicStart = 0;
+        this.playingMusic = false;
+        const toast = await this.toastController.create({
+          message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
+          position: 'top',
+          buttons: [
+            {
+              side: 'end',
+              icon: 'star',
+              text: 'סגור',
+            },
+          ],
+        });
+        toast.present();
+      };
+      this.audio.src = audioSrc;
+      this.audio.load();
+    }
   }
 
-  stop() {
-    this.nativeAudio.stop('uniqueId1').then(
-      async () => {
-        if (this.playingMusic) {
-          this.playingMusic = false;
-          this.nativeAudio.unload('uniqueId1').then(
-            () => {},
-            () => {}
-          );
-          const currTime = Date.now();
-          const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
-          if (showerTimeSec < 120) {
-            const toast = await this.toastController.create({
-              message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
-              position: 'top',
-              buttons: [
-                {
-                  side: 'end',
-                  icon: 'star',
-                  text: 'סגור',
-                },
-              ],
-            });
-            toast.present();
-          } else {
-            this.report();
-          }
-        }
-      },
-      () => {}
+  play() {
+    this.playingMusic = true;
+    this.playingMusicStart = Date.now();
+    this.audio.play();
+    this.audioCountDown = timer(0, 1000).subscribe(() => {
+      --this.audioDuration;
+      this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+    });
+  }
+  async stop() {
+    this.resetAudio();
+    if (this.playingMusic) {
+      this.playingMusic = false;
+      const currTime = Date.now();
+      const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
+      if (showerTimeSec < 120) {
+        const toast = await this.toastController.create({
+          message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
+          position: 'top',
+          buttons: [
+            {
+              side: 'end',
+              icon: 'star',
+              text: 'סגור',
+            },
+          ],
+        });
+        toast.present();
+      } else {
+        this.report();
+      }
+    }
+  }
+
+  resetAudio() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.audioDuration = Math.round(this.audio.duration);
+    this.audioDurationFormatted = this.formatDuration(this.audioDuration);
+    if (this.audioCountDown) {
+      this.audioCountDown.unsubscribe();
+      this.audioCountDown = null;
+    }
+  }
+
+  formatDuration(duration: number) {
+    const minutes: number = Math.floor(duration / 60);
+    return (
+      ('00' + minutes).slice(-2) +
+      ':' +
+      ('00' + Math.floor(duration - minutes * 60)).slice(-2)
     );
   }
+
+  // play() {
+  //   this.nativeAudio
+  //     .preloadSimple(
+  //       'uniqueId1',
+  //       'assets/audio/Guns_N_Roses_-_Sweet_Child_O_Mine.mp3'
+  //     )
+  //     .then(
+  //       () => {
+  //         this.playingMusic = true;
+  //         this.playingMusicStart = Date.now();
+  //         this.audio.play();
+  //         this.nativeAudio.play('uniqueId1', async () => {
+  //           this.playingMusicStart = 0;
+  //           this.playingMusic = false;
+  //           const toast = await this.toastController.create({
+  //             message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
+  //             position: 'top',
+  //             buttons: [
+  //               {
+  //                 side: 'end',
+  //                 icon: 'star',
+  //                 text: 'סגור',
+  //               },
+  //             ],
+  //           });
+  //           toast.present();
+  //         });
+  //       },
+  //       async (error) => {
+  //         console.log(error);
+  //         const toast = await this.toastController.create({
+  //           message: `לא ניתן לנגן, נא לנסות מאוחר יותר`,
+  //           position: 'top',
+  //           duration: 2000,
+  //         });
+  //         toast.present();
+  //       }
+  //     );
+  // }
+
+  // stop() {
+  //   this.nativeAudio.stop('uniqueId1').then(
+  //     async () => {
+  //       if (this.playingMusic) {
+  //         this.playingMusic = false;
+  //         this.nativeAudio.unload('uniqueId1').then(
+  //           () => {},
+  //           () => {}
+  //         );
+  //         const currTime = Date.now();
+  //         const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
+  //         if (showerTimeSec < 120) {
+  //           const toast = await this.toastController.create({
+  //             message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
+  //             position: 'top',
+  //             buttons: [
+  //               {
+  //                 side: 'end',
+  //                 icon: 'star',
+  //                 text: 'סגור',
+  //               },
+  //             ],
+  //           });
+  //           toast.present();
+  //         } else {
+  //           this.report();
+  //         }
+  //       }
+  //     },
+  //     () => {}
+  //   );
+  // }
 }
+
+// @Pipe({
+//   name: 'formatTime',
+// })
+// export class FormatTimePipe implements PipeTransform {
+//   transform(value: number): string {
+//     const minutes: number = Math.floor(value / 60);
+//     return (
+//       ('00' + minutes).slice(-2) +
+//       ':' +
+//       ('00' + Math.floor(value - minutes * 60)).slice(-2)
+//     );
+//   }
+// }

@@ -113,9 +113,14 @@
           alt=""
         />
         <div class="action-content-points bold">
+          <img
+            class="currency-image"
+            src="assets/icon/green-currency.png"
+            alt=""
+          />
           {{selectedActionContext.greenPoints}}+
         </div>
-        <div class="action-content-points-text bold">מטבעות ירוקים</div>
+        <!-- <div class="action-content-points-text bold">מטבעות ירוקים</div> -->
         <div class="action-content-desc bold">
           {{selectedActionContext.description}}
         </div>
@@ -124,15 +129,18 @@
             >{{selectedActionContext.reportText}}</ion-button
           >
         </div>
-        <div *ngIf="selectedActionContext.case == 'water'">
-          <ion-button (click)="stop()" [disabled]="!playingMusic"
+        <div class="water" *ngIf="selectedActionContext.case == 'water'">
+          <!-- <ion-label>{{audioDuration | formatTime}}</ion-label> -->
+          <ion-button (click)="stop()" *ngIf="playingMusic"
             ><ion-icon name="stop"></ion-icon
           ></ion-button>
-          <ion-button (click)="play()" [disabled]="playingMusic"
+          <ion-button (click)="play()" *ngIf="!playingMusic"
             ><ion-icon name="play"></ion-icon
           ></ion-button>
         </div>
+        <ion-label class="timer">{{audioDurationFormatted}}</ion-label>
       </div>
     </div>
   </div>
+  <audio src="{{audioSrc}}" #audioElement></audio>
 </ion-content>
