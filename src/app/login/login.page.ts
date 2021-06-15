@@ -40,40 +40,42 @@ export class LoginPage implements OnInit {
     event.target.placeHolder = this.namePlaceholder;
   }
 
-  signUp() {
+  async signUp() {
     // console.log(`${this.name} -- ${this.email} -- ${this.password}`);
-    this.authenticationService
-      .SignUp(this.email, this.password)
-      .then(async (result) => {
-        const loggedInUser = await this.authenticationService.isLoggedIn();
-        if (!loggedInUser) {
+    if (this.name && this.email) {
+      this.authenticationService
+        .SignUp(this.email, this.password)
+        .then(async (result) => {
+          const loggedInUser = await this.authenticationService.isLoggedIn();
+          if (!loggedInUser) {
+            // const toast = await this.toastController.create({
+            //   message: 'שגיאה, אנא נסה שוב מאוחר יותר',
+            //   duration: 2000,
+            //   position: 'top',
+            // });
+            // toast.present();
+          } else {
+            await this.createUser(loggedInUser.uid);
+            this.router.navigate(['opt-in'], { relativeTo: this.route });
+          }
+        })
+        .catch(async (error) => {
+          console.log(error);
           const toast = await this.toastController.create({
-            message: 'שגיאה, אנא נסה שוב מאוחר יותר',
+            message: error.message,
             duration: 2000,
             position: 'top',
           });
           toast.present();
-        }
-        if (this.name && this.email) {
-          await this.createUser(loggedInUser.uid);
-          this.router.navigate(['opt-in'], { relativeTo: this.route });
-        } else {
-          const toast = await this.toastController.create({
-            message: 'שגיאה, יש להזין שם',
-            duration: 2000,
-            position: 'top',
-          });
-          toast.present();
-        }
-      })
-      .catch(async (error) => {
-        const toast = await this.toastController.create({
-          message: error.message,
-          duration: 2000,
-          position: 'top',
         });
-        toast.present();
+    } else {
+      const toast = await this.toastController.create({
+        message: 'שגיאה, יש להזין שם',
+        duration: 2000,
+        position: 'top',
       });
+      toast.present();
+    }
   }
 
   signIn() {
