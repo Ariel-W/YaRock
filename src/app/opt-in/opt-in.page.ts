@@ -48,6 +48,7 @@ export class OptInPage implements OnInit {
     }
     user.city = this.city || null;
     user.age = this.age || null;
+    user.groupCode = this.groupCode;
     user.greenActivity = this.preferredActivity || null;
     await this.firestoreService.createOrUpdateUser(user);
     this.router.navigate(['/how-to'], { relativeTo: this.route });
