@@ -247,3 +247,10 @@
   height: 200px;
   background-color: white;
 }
+
+.background-image {
+  // background-image: "../assets/images/app-background.png";
+  --background: url("../../assets/images/app-background-01.png") 0 0/100% 100%
+    no-repeat;
+  background-size: cover;
+}

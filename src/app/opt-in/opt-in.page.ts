@@ -19,6 +19,7 @@ export class OptInPage implements OnInit {
   public greenPartners: string;
   public groupCode: string;
   public preferredActivity;
+  private currToast;
 
   constructor(
     private router: Router,
@@ -33,12 +34,15 @@ export class OptInPage implements OnInit {
   public async Submit() {
     const loggedInUser = await this.authenticationService.isLoggedIn();
     if (!loggedInUser) {
-      const toast = await this.toastController.create({
+      if (this.currToast) {
+        this.currToast.dismiss();
+      }
+      this.currToast = await this.toastController.create({
         message: 'שגיאה, אנא נסה שוב מאוחר יותר',
         duration: 2000,
         position: 'top',
       });
-      toast.present();
+      this.currToast.present();
     }
     const user: any = await this.firestoreService.getUserByUid(
       loggedInUser.uid

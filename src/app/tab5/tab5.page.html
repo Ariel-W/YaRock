@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="background-image">
   <div class="logout-button"><a (click)="logout()">יציאה</a></div>
   <div class="profile-tab">
     <div class="profile-info">
@@ -8,7 +8,7 @@
           {{this.currUser.name}}
         </div>
       </div>
-      <div class="points">
+      <!-- <div class="points">
         <div *ngIf="this.currUser" class="points-amount bold">
           {{this.currUser.greenPoints}}
         </div>
@@ -17,7 +17,7 @@
           class="green-currency"
           alt="currency"
         />
-      </div>
+      </div> -->
     </div>
     <div class="yarok-bands">
       <div class="yarok-bands-title">הקבוצה הירוקה שלי</div>

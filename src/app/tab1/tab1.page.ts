@@ -44,6 +44,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
   public audioSrc;
   @ViewChild('audioElement', { static: true }) public _audioRef: ElementRef;
   private audio: HTMLMediaElement;
+  private currToast;
 
   public greenActions = [
     {
@@ -52,8 +53,9 @@ export class Tab1Page implements OnInit, AfterViewInit {
       case: 'greenPower',
       detailedTitle: 'נסיעה בתחבורה ציבורית',
       greenPoints: 5,
-      description: 'יש להעלות תצלום חשבונית של נסיעה בתחבורה ציבורית מהיום :-)',
-      reportText: 'סרוק קבלת תחבורה ציבורית',
+      description:
+        'להעלות תצלום קבלה של נסיעה ציבורית, תמונה עם אופנים או תמונה ברכב קארפול ומרוויחים!',
+      reportText: 'נסעתי ירוק',
       isActive: true,
     },
     {
@@ -102,7 +104,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
       detailedTitle: 'מחזור בקבוק פלסטיק',
       description: 'בוא נראה אותך בסלפי עם בקבוק ומחזורית',
       greenPoints: 3,
-      reportText: 'דווח מחזור',
+      reportText: 'העלאת סלפי',
       isActive: true,
     },
   ];
@@ -190,12 +192,15 @@ export class Tab1Page implements OnInit, AfterViewInit {
       this.showActionContent = true;
       this.selectedActionContext = greenAction;
     } else {
-      const toast = await this.toastController.create({
+      if (this.currToast) {
+        this.currToast.dismiss();
+      }
+      this.currToast = await this.toastController.create({
         message: 'אתגר זה אינו זמין כעת, האתגר יופעל בקרב',
         duration: 2000,
         position: 'top',
       });
-      toast.present();
+      this.currToast.present();
     }
   }
 
@@ -266,7 +271,10 @@ export class Tab1Page implements OnInit, AfterViewInit {
       };
     } else {
       message = `כל הכבוד על השלמת האתגר<br/>שים לב - ניתן לקבל נק׳ ירוקות על השלמת אתגר אחת ליממה`;
-      const toast = await this.toastController.create({
+      if (this.currToast) {
+        this.currToast.dismiss();
+      }
+      this.currToast = await this.toastController.create({
         message: message,
         cssClass: 'text-align: right;',
         position: 'top',
@@ -278,7 +286,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
           },
         ],
       });
-      toast.present();
+      this.currToast.present();
     }
     const currTime = Date.now();
     user.completedChallenges = user.completedChallenges || {};
@@ -297,7 +305,10 @@ export class Tab1Page implements OnInit, AfterViewInit {
   }
 
   async clickEvent() {
-    const toast = await this.toastController.create({
+    if (this.currToast) {
+      this.currToast.dismiss();
+    }
+    this.currToast = await this.toastController.create({
       message: `האירוע יהיה פעיל במועד הנקוב מטה`,
       cssClass: 'text-align: right;',
       position: 'top',
@@ -309,7 +320,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
         },
       ],
     });
-    toast.present();
+    this.currToast.present();
   }
 
   prepareAudio(audioSrc: string) {
@@ -324,7 +335,10 @@ export class Tab1Page implements OnInit, AfterViewInit {
         this.resetAudio();
         this.playingMusicStart = 0;
         this.playingMusic = false;
-        const toast = await this.toastController.create({
+        if (this.currToast) {
+          this.currToast.dismiss();
+        }
+        this.currToast = await this.toastController.create({
           message: `השיר נגמר... נסה שוב במקלחת הבאה :-)`,
           position: 'top',
           buttons: [
@@ -335,7 +349,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
             },
           ],
         });
-        toast.present();
+        this.currToast.present();
       };
       this.audio.src = audioSrc;
       this.audio.load();
@@ -358,7 +372,10 @@ export class Tab1Page implements OnInit, AfterViewInit {
       const currTime = Date.now();
       const showerTimeSec = (currTime - this.playingMusicStart) / 1000;
       if (showerTimeSec < 120) {
-        const toast = await this.toastController.create({
+        if (this.currToast) {
+          this.currToast.dismiss();
+        }
+        this.currToast = await this.toastController.create({
           message: `המממ.... האם באמת התקלחנו כל כך מהר?   יש לנסות שוב`,
           position: 'top',
           buttons: [
@@ -369,7 +386,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
             },
           ],
         });
-        toast.present();
+        this.currToast.present();
       } else {
         this.report();
       }

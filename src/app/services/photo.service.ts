@@ -29,6 +29,7 @@ export class PhotoService {
   base64Image: string;
   selectedFile: File = null;
   downloadURL: Observable<string>;
+  private currToast;
 
   constructor(
     // private camera: Camera,
@@ -83,11 +84,14 @@ export class PhotoService {
   }
 
   async showSuccesfulUploadAlert() {
-    const toast = await this.toastController.create({
+    if (this.currToast) {
+      this.currToast.dismiss();
+    }
+    this.currToast = await this.toastController.create({
       duration: 3000,
       message: 'התמונה הועלתה בהצלחה',
     });
-    toast.present();
+    this.currToast.present();
   }
 
   base64ToImage(dataURI) {

@@ -138,11 +138,13 @@ export class Tab3Page implements OnInit {
       // Calculate group rankings
       let groups: any = [];
       users.forEach((user: any) => {
-        groups[user.groupCode] = groups[user.groupCode] || {
-          totalPoints: 0,
-          name: user.groupCode,
-        };
-        groups[user.groupCode].totalPoints += user.totalPoints;
+        if (user.groupCode) {
+          groups[user.groupCode] = groups[user.groupCode] || {
+            totalPoints: 0,
+            name: user.groupCode,
+          };
+          groups[user.groupCode].totalPoints += user.totalPoints;
+        }
       });
       const groupKyes: string[] = Object.keys(groups);
       let groupsArr = [];

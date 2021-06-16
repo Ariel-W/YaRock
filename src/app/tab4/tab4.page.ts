@@ -18,6 +18,7 @@ export class Tab4Page {
 
   public currUser;
   public subscription;
+  private currToast;
 
   slidesContext = [
     {
@@ -129,12 +130,15 @@ export class Tab4Page {
       });
       await alert.present();
     } else {
-      const toast = await this.toastController.create({
+      if (this.currToast) {
+        this.currToast.dismiss();
+      }
+      this.currToast = await this.toastController.create({
         message: 'אין מספיק מטבעות ירוקים, קדימה לאתגר הבא',
         duration: 2000,
         position: 'top',
       });
-      toast.present();
+      this.currToast.present();
     }
   }
 }
