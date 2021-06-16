@@ -3,7 +3,7 @@
 }
 
 .profile-tab {
-  padding: 30px 10px;
+  padding: 0px 10px;
   display: flex;
   flex-direction: column;
   // justify-content: space-evenly;
@@ -17,11 +17,16 @@
 
     .avatar {
       flex: 1;
+      align-content: center;
 
+      .profile-image {
+        margin-left: 50px;
+      }
       .profile-name {
         font-size: 26px;
         font-weight: bold;
         text-align: center;
+        margin-bottom: 20px;
       }
     }
 
@@ -49,13 +54,14 @@
       color: white;
       font-size: 28px;
       display: flex;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
       border: 1px solid green;
       height: 45px;
     }
 
     &-content {
+      direction: rtl;
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
@@ -91,4 +97,15 @@
       height: 7vw;
     }
   }
+}
+
+.background-image {
+  // background-image: "../assets/images/app-background.png";
+  --background: url("../../assets/images/app-background-01.png") 0 0/100% 100%
+    no-repeat;
+  background-size: cover;
+}
+
+.edit-button {
+  margin-right: 20px;
 }

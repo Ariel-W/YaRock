@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="background-image">
   <div class="market-tab">
     <div class="market-tab-header">
       <div class="spacer"></div>
@@ -7,7 +7,7 @@
         <div *ngIf="this.currUser" class="points-amount bold">
           {{this.currUser.greenPoints}}
         </div>
-        <div>
+        <div class="green-currency-position">
           <img
             class="green-currency"
             src="assets/icon/green-currency.png"

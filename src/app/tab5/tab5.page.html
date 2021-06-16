@@ -1,14 +1,18 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="background-image">
   <div class="logout-button"><a (click)="logout()">יציאה</a></div>
   <div class="profile-tab">
     <div class="profile-info">
       <div class="avatar">
-        <img src="assets/images/profile.png" alt="profile" />
+        <img
+          src="assets/images/profile.png"
+          alt="profile"
+          class="profile-image"
+        />
         <div *ngIf="this.currUser" class="profile-name ls-1">
           {{this.currUser.name}}
         </div>
       </div>
-      <div class="points">
+      <!-- <div class="points">
         <div *ngIf="this.currUser" class="points-amount bold">
           {{this.currUser.greenPoints}}
         </div>
@@ -17,17 +21,21 @@
           class="green-currency"
           alt="currency"
         />
-      </div>
+      </div> -->
     </div>
     <div class="yarok-bands">
-      <div class="yarok-bands-title">הקבוצה הירוקה שלי</div>
+      <div class="yarok-bands-title">
+        <ion-button class="edit-button" (click)="editGroup()"
+          ><ion-icon name="create-outline"></ion-icon></ion-button
+        >הקבוצה הירוקה שלי
+      </div>
       <div class="yarok-bands-content">
         <div *ngIf="this.groupUsers" class="yarok-bands-list">
           <div class="groupMembers" *ngFor="let groupUser of this.groupUsers">
             <div class="groupMember">{{groupUser.name}}</div>
           </div>
         </div>
-        <div class="create-band">
+        <!-- <div class="create-band">
           <ion-button (click)="updateGroupCode()" class="opt-in-button ls-1"
             >עדכן</ion-button
           >
@@ -36,7 +44,7 @@
             [(ngModel)]="groupCode"
           ></ion-input>
           <div>:קוד קבוצה</div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

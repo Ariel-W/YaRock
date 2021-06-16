@@ -10,13 +10,14 @@ import { FirestoreService } from '../services/firestore.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  public loginTitleText: string = 'YaRock\nהמהפה הירוקה';
+  public loginTitleText: string = 'YaRock\nהמהפכה הירוקה';
   public joinButtonText: string = 'הרשמה';
   public namePlaceholder: string = 'שם מלא';
   public name: string;
   public email: string;
   public password: string;
   public signUpMode: boolean = true;
+  private currToast;
 
   constructor(
     private router: Router,
@@ -61,20 +62,26 @@ export class LoginPage implements OnInit {
         })
         .catch(async (error) => {
           console.log(error);
-          const toast = await this.toastController.create({
+          if (this.currToast) {
+            this.currToast.dismiss();
+          }
+          this.currToast = await this.toastController.create({
             message: error.message,
             duration: 2000,
             position: 'top',
           });
-          toast.present();
+          this.currToast.present();
         });
     } else {
-      const toast = await this.toastController.create({
+      if (this.currToast) {
+        this.currToast.dismiss();
+      }
+      this.currToast = await this.toastController.create({
         message: 'שגיאה, יש להזין שם',
         duration: 2000,
         position: 'top',
       });
-      toast.present();
+      this.currToast.present();
     }
   }
 
@@ -85,12 +92,15 @@ export class LoginPage implements OnInit {
         this.router.navigate(['/main/tabs/tab1'], { relativeTo: this.route });
       })
       .catch(async (error) => {
-        const toast = await this.toastController.create({
+        if (this.currToast) {
+          this.currToast.dismiss();
+        }
+        this.currToast = await this.toastController.create({
           message: error.message,
           duration: 2000,
           position: 'top',
         });
-        toast.present();
+        this.currToast.present();
       });
   }
 

@@ -10,6 +10,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class AuthenticationService {
   public tab1Selected: Subject<string>;
+  private currToast;
 
   constructor(
     private toastController: ToastController,
@@ -27,12 +28,15 @@ export class AuthenticationService {
         console.log(result.user);
       })
       .catch(async (error) => {
-        const toast = await this.toastController.create({
+        if (this.currToast) {
+          this.currToast.dismiss();
+        }
+        this.currToast = await this.toastController.create({
           message: error.message,
           duration: 2000,
           position: 'top',
         });
-        toast.present();
+        this.currToast.present();
       });
   }
 

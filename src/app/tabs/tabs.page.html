@@ -3,20 +3,24 @@
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="tab1" (click)="test($event)">
       <img class="tab-image" src="assets/icon/home-tab.png" alt="" />
-      <ion-label>ראשי</ion-label>
+      <!-- <ion-label>ראשי</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="tab3">
       <img class="tab-image" src="assets/icon/league-tab.png" alt="" />
-      <ion-label>ליגה</ion-label>
+      <!-- <ion-label>ליגה</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="tab5">
       <img class="tab-image" src="assets/icon/profile-tab.png" alt="" />
-      <ion-label>פרופיל</ion-label>
+      <!-- <ion-label>פרופיל</ion-label> -->
     </ion-tab-button>
     <ion-tab-button tab="tab4">
-      <img class="tab-image" src="assets/icon/green-currency.png" alt="" />
+      <img
+        class="tab-image-points"
+        src="assets/icon/green-currency.png"
+        alt=""
+      />
       <ion-label *ngIf="this.currUser" class="points-amount"
         >{{this.currUser.greenPoints}}</ion-label
       >

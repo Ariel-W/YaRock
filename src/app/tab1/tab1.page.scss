@@ -48,7 +48,7 @@
       // grid-template-columns: 33% 33% 33%;
       // justify-content: center;
       // align-items: center;
-      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 18vw);
+      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 21vw);
       flex: 1;
 
       align-self: center;
@@ -72,7 +72,7 @@
             font-size: 16px;
             text-align: center;
             color: var(--ion-color-secondary);
-            min-width: 75px;
+            min-width: 81px;
           }
           .green-action-title-small {
             position: absolute;
@@ -246,4 +246,11 @@
     no-repeat center !important;
   height: 200px;
   background-color: white;
+}
+
+.background-image {
+  // background-image: "../assets/images/app-background.png";
+  --background: url("../../assets/images/app-background-01.png") 0 0/100% 100%
+    no-repeat;
+  background-size: cover;
 }
