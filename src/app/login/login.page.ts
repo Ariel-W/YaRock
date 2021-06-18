@@ -105,12 +105,17 @@ export class LoginPage implements OnInit {
   }
 
   async createUser(uid: string) {
+    const currTime = Date.now();
+    const visits = {};
+    visits[currTime] = currTime;
     const user = {
       uid: uid,
       name: this.name || null,
       email: this.email || null,
       greenPoints: 0,
       totalPoints: 0,
+      createdTime: Date.now(),
+      visits: visits,
     };
     return this.firestoreService.createOrUpdateUser(user);
   }
