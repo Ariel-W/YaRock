@@ -236,7 +236,7 @@
     color: green;
   }
   .currency-image {
-    width: 9vw;
+    width: 12vw;
   }
 }
 
@@ -253,4 +253,19 @@
   --background: url("../../assets/images/app-background-01.png") 0 0/100% 100%
     no-repeat;
   background-size: cover;
+}
+
+.points-amount {
+  display: flex;
+  font-weight: bolder;
+  font-size: 27px;
+  margin-top: -55px;
+  margin-left: -35px;
+  &-num {
+    color: aliceblue;
+  }
+  &-plus {
+    padding-right: 15px;
+    color: black;
+  }
 }
