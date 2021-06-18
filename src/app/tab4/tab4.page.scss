@@ -15,12 +15,14 @@
     }
 
     .market-tab-title {
-      flex: 1;
       font-size: 30px;
-      padding-top: 20px;
+      //padding-top: 20px;
       font-weight: bold;
       text-align: center;
-      min-width: 180px;
+      background-image: url("/assets/images/TitleBack.png");
+      background-size: cover;
+      width: 90%;
+      margin-right: 5%;
 
       @media screen and(max-width:350px) {
         font-size: 25px;
@@ -71,6 +73,7 @@
         z-index: 3;
       }
     }
+
     .slide {
       display: flex;
       column-gap: 20px;
@@ -90,7 +93,8 @@
           row-gap: 10px;
 
           .slide-item-title {
-            margin-bottom: 10vw;
+              margin-top:10px;
+            //margin-bottom: 10vw;
           }
 
           .slide-image {
@@ -103,7 +107,6 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-
             font-size: 20px;
             font-weight: bold;
           }

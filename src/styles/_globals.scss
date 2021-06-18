@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Assistant', sans-serif;
-    src: url('../assets/fonts/Assistant-VariableFont_wght.ttf');
+  font-family: 'Assistant', sans-serif;
+  src: url('../assets/fonts/Assistant-Light.ttf');
 }
 
 ion-content ion-button{
@@ -12,9 +12,9 @@ ion-tab-bar{
     padding-bottom: 5px;
 }
 
-ion-button{
-    text-transform: none;
-    --border-radius: 8px;
+ion-button {
+  text-transform: none;
+  
 }
 
 ion-input {

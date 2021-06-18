@@ -4,13 +4,14 @@
   align-items: center;
   height: 100%;
   padding: 30px 10px;
+  font-family: 'Assistant', sans-serif !important;
 
   &-title {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     white-space: pre;
-    padding-top: 20px;
+    padding-top: 10px;
     margin-bottom: 20px;
   }
 
@@ -20,7 +21,10 @@
     font-size: 30px;
     font-weight: bold;
     white-space: pre;
-    padding-top: 20px;
+    padding-top: 10px;
+    background-image: url("/assets/images/TitleBack.png");
+    background-size: cover;
+    width: 90%;
   }
 
   &-form {
@@ -37,16 +41,34 @@
     }
 
     .join-button {
-      font-size: 28px;
+      font-size: 20px;
       font-weight: bold;
-      height: 50px;
-      width: 250px;
+      line-height: 40px;
+      width: 100px;
+      background: url("/assets/images/ButtonApprove.png") no-repeat 0px 10px;
+      background-size: contain;
+      background-color: transparent;
+      float: right;
+    }
+
+    .switch-button {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 40px;
+      width: 100px;
+      background: url("/assets/images/ButtonReject.png") no-repeat 0px 10px;
+      background-size: contain;
+      background-color: transparent;
+      float: right;
+      color:#0a301f;
     }
 
     .login-button {
-      display: flex;
+
       flex-direction: column;
       align-items: center;
+      margin-top: 10px;
+      float:right;
     }
   }
 }

@@ -1,6 +1,9 @@
 .logout-button {
   direction: rtl;
 }
+.logout-button a{
+    color:#0a301f;
+}
 
 .profile-tab {
   padding: 0px 10px;
@@ -20,8 +23,9 @@
       align-content: center;
 
       .profile-image {
-        margin-left: 50px;
+        //margin-left: 50px;
       }
+
       .profile-name {
         font-size: 26px;
         font-weight: bold;
@@ -50,13 +54,14 @@
     justify-content: space-evenly;
 
     &-title {
-      background-color: #60a917;
+      background-color:#f28fbd;
+      background-size: cover;
+      margin-right: 5%;
       color: white;
       font-size: 28px;
       display: flex;
       // justify-content: center;
       align-items: center;
-      border: 1px solid green;
       height: 45px;
     }
 
@@ -73,6 +78,7 @@
       flex-direction: column;
       align-items: center;
     }
+
     .groupMembers {
       margin: 10px 0 10px 0;
       font-size: 6vw;

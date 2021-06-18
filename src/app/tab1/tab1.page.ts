@@ -48,8 +48,8 @@ export class Tab1Page implements OnInit, AfterViewInit {
 
   public greenActions = [
     {
-      imgSrc: 'assets/icon/green-power.png',
-      title: 'תחבורה ירוקה',
+      imgSrc: 'assets/icon/YarockGreenTransport.png',
+      title: 'תחבורה',
       case: 'greenPower',
       detailedTitle: 'נסיעה בתחבורה ציבורית',
       greenPoints: 5,
@@ -59,35 +59,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
       isActive: true,
     },
     {
-      imgSrc: 'assets/icon/reuse.png',
-      title: 'שימוש חוזר',
-      case: 'reuse',
-      detailedTitle: 'יצירת עציצים מקרטון חלב',
-      greenPoints: 1,
-      reportText: 'דווח שימוש חוזר',
-      isActive: false,
-    },
-    {
-      imgSrc: 'assets/icon/plant-a-tree.png',
-      title: 'טבע',
-      case: 'plantATree',
-      detailedTitle: 'ניקיון שמורת טבע',
-      greenPoints: 5,
-      reportText: 'דווח שמירה על הטבע',
-      isActive: false,
-    },
-
-    {
-      imgSrc: 'assets/icon/electricity.png',
-      title: 'חשמל',
-      case: 'electricity',
-      detailedTitle: 'חסכון בחשמל בבית / מקום העבודה',
-      greenPoints: 1,
-      reportText: 'דווח חיסכון בחשמל',
-      isActive: false,
-    },
-    {
-      imgSrc: 'assets/icon/water.png',
+      imgSrc: 'assets/icon/YarockWater.png',
       title: 'מים',
       case: 'water',
       detailedTitle: 'התקלחת יצאת',
@@ -98,7 +70,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
       isActive: true,
     },
     {
-      imgSrc: 'assets/icon/recycle.png',
+      imgSrc: 'assets/icon/YarockRecycle.png',
       title: 'מחזור',
       case: 'recycle',
       detailedTitle: 'מחזור בקבוק פלסטיק',
@@ -107,25 +79,53 @@ export class Tab1Page implements OnInit, AfterViewInit {
       reportText: 'העלאת סלפי',
       isActive: true,
     },
+    {
+      imgSrc: 'assets/icon/YarockReuse.png',
+      title: 'שימוש חוזר',
+      case: 'reuse',
+      detailedTitle: 'יצירת עציצים מקרטון חלב',
+      greenPoints: 1,
+      reportText: 'דווח שימוש חוזר',
+      isActive: false,
+    },
+    {
+      imgSrc: 'assets/icon/YarockPlant.png',
+      title: 'טבע',
+      case: 'plantATree',
+      detailedTitle: 'ניקיון שמורת טבע',
+      greenPoints: 5,
+      reportText: 'דווח שמירה על הטבע',
+      isActive: false,
+    },
+
+    {
+      imgSrc: 'assets/icon/YarockGreenEnergy.png',
+      title: 'חשמל',
+      case: 'electricity',
+      detailedTitle: 'חסכון בחשמל בבית / מקום העבודה',
+      greenPoints: 1,
+      reportText: 'דווח חיסכון בחשמל',
+      isActive: false,
+    },
   ];
 
   public greenActionsContext = [
     {
       imgSrc: 'assets/icon/reuse.png',
       title: 'Report Reuse Activity',
-      sliderImg1Src: 'assets/images/reuse-slider1.png',
+      sliderImg1Src: 'assets/images/YarockWelcomeIcon.png',
       sliderText1: 'ניקיון חופים - 27.06.2021',
     },
     {
       imgSrc: 'assets/icon/green-power.png',
       title: 'Report Green Power Activity',
-      sliderImg1Src: 'assets/images/reuse-slider1.png',
+      sliderImg1Src: 'assets/images/YarockWelcomeIcon.png',
       sliderText1: 'ניקיון יער בן שמן - 11.07.2021',
     },
     {
       imgSrc: 'assets/icon/water.png',
       title: 'Report Water Activity',
-      sliderImg1Src: 'assets/images/reuse-slider1.png',
+      sliderImg1Src: 'assets/images/YarockWelcomeIcon.png',
       sliderText1: 'ניקיון נחל דוד - 20.07.2021',
     },
   ];

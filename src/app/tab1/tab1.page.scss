@@ -37,6 +37,19 @@
   direction: rtl;
   height: 100%;
 
+  &-subtitle {
+    color: #0a301f;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    white-space: pre;
+    padding-top: 10px;
+    background-image: url("/assets/images/TitleBack.png");
+    background-size: cover;
+    width: 90%;
+    margin-right: 5%
+  }
+
   &-content {
     padding: 25px 10px 0px 10px;
     display: flex;
@@ -44,18 +57,19 @@
     height: 100%;
 
     .green-actions {
-      // display: grid;
-      // grid-template-columns: 33% 33% 33%;
-      // justify-content: center;
-      // align-items: center;
-      @include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 21vw);
-      flex: 1;
+      display: grid;
+      grid-template-columns: 30% 30% 30%;
+      justify-content: center;
+      align-items: center;
+      //@include on-circle($item-count: 6, $circle-size: 63vw, $item-size: 21vw);
+      //flex: 1;
 
       align-self: center;
 
       .green-action-container {
         .green-action {
           position: relative;
+          margin:5px;
           // display: flex;
           // flex-direction: column;
           // align-items: center;
@@ -74,6 +88,7 @@
             color: var(--ion-color-secondary);
             min-width: 81px;
           }
+
           .green-action-title-small {
             position: absolute;
             bottom: 50px;
@@ -161,29 +176,33 @@
         height: 150px;
         margin: 30px 0px 30px 0px;
       }
+
       .action-content-title {
         font-size: 6vw;
         color: green;
       }
+
       .action-content-points {
         font-size: 8vw;
         color: orange;
       }
+
       .action-content-points-desc {
         margin-top: 4vw;
         font-size: 4vw;
         color: black;
       }
+
       .action-content-points-text {
         font-size: 6vw;
         color: orange;
       }
+
       .report-button {
         font-size: 5vw;
         font-weight: normal;
         height: 50px;
         width: 250px;
-        margin-top: 40vw;
       }
     }
 
@@ -205,25 +224,45 @@
         &-next {
           position: absolute;
           right: 6%;
-          top: 70%;
+          top: 60%;
+          width: 40px;
+          height: 40px;
           font-size: 40px;
           z-index: 1;
+          background-image: url("/assets/icon/ArrowRight.png");
         }
 
         &-prev {
           position: absolute;
           left: 6%;
-          top: 70%;
+          width: 40px;
+          height: 40px;
+          top: 60%;
+          width: 40px;
+          height: 40px;
           font-size: 40px;
           z-index: 3;
+          background-image: url("/assets/icon/ArrowLeft.png");
         }
       }
 
       .slide-image {
         max-width: 40%;
+
         @media screen and(min-width:370px) and(min-height:700px) {
           max-width: 80%;
         }
+      }
+
+      .slide-details {
+        background-image: url("/assets/images/ButtonApprove.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-size: 16pt;
+        width: 60%;
+        margin: auto;
+        color: #ffffff;
+        padding:5px;
       }
     }
   }
@@ -231,10 +270,12 @@
   .water {
     margin-top: 30px;
   }
+
   .timer {
     font-size: 5vw;
     color: green;
   }
+
   .currency-image {
     width: 9vw;
   }
@@ -246,6 +287,9 @@
     no-repeat center !important;
   height: 200px;
   background-color: white;
+  direction:rtl;
+  text-align:right;
+
 }
 
 .background-image {
