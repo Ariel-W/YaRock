@@ -22,7 +22,7 @@
           <div class="slide">
             <div class="slide-items">
               <div class="slide-item" (click)="consumeGift(slider, 'first')">
-                <div class="slide-item-title">{{slider.title}}</div>
+                <div class="slide-item-title">{{slider.firstTitle}}</div>
                 <img
                   class="slide-image"
                   src="{{slider.firstImage}}"
@@ -38,6 +38,7 @@
                 </div>
               </div>
               <div class="slide-item" (click)="consumeGift(slider, 'second')">
+                <div class="slide-item-title">{{slider.secondTitle}}</div>
                 <img
                   class="slide-image"
                   src="{{slider.secondImage}}"
