@@ -22,7 +22,7 @@ import { FirestoreService } from '../services/firestore.service';
 import { PhotoService } from '../services/photo.service';
 import { ToastController } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
-import { timeout } from 'rxjs/operators';
+import { timeout, timestamp } from 'rxjs/operators';
 import { Subscription, timer } from 'rxjs';
 
 @Component({
@@ -413,6 +413,62 @@ export class Tab1Page implements OnInit, AfterViewInit {
     );
   }
 
+  async button01() {
+    console.log(`Button01 => clicked`);
+    await this.firestoreService.getUsers().subscribe((users) => {
+      let userExcel =
+        'Name,Email,Signup Date, Total Points, Green Points, Water Challenge, Recycle Challenge, Commute Challenge\n';
+      const userEmails = [];
+      const userNames = [];
+      const userSignupDate = [];
+      const userTotalpoints = [];
+      const userGreenPoints = [];
+      const userCompletedWaterChallenges = [];
+      const userCompletedRecycleChallenges = [];
+      const userCompletedCommuteChallenges = [];
+      let signupDate = '';
+      const completedChallengesByType = {};
+      completedChallengesByType['water'] = 0;
+      completedChallengesByType['greenPower'] = 0;
+      completedChallengesByType['recycle'] = 0;
+      let completedChallenges = {};
+      let completedChallengesTimes = [];
+
+      users.forEach((user: any) => {
+        userExcel += `${user.email}`;
+        userExcel += `,${user.name}`;
+        signupDate = '';
+        if (user.createdTime) {
+          signupDate = new Date(user.createdTime).toString();
+        }
+        userExcel += `,${signupDate}`;
+        userExcel += `,${user.totalPoints}`;
+        userExcel += `,${user.greenPoints}`;
+        completedChallengesByType['water'] = 0;
+        completedChallengesByType['greenPower'] = 0;
+        completedChallengesByType['recycle'] = 0;
+        completedChallenges = user.completedChallenges;
+        if (completedChallenges) {
+          completedChallengesTimes = Object.keys(completedChallenges);
+          completedChallengesTimes.forEach((timestamp) => {
+            completedChallengesByType[
+              completedChallenges[timestamp].challenge
+            ]++;
+          });
+        }
+        userExcel += `,${completedChallengesByType['water']}`;
+        userExcel += `,${completedChallengesByType['recycle']}`;
+        userExcel += `,${completedChallengesByType['greenPower']}\n`;
+      });
+      console.log(userExcel);
+      var hiddenElement = document.createElement('a');
+      hiddenElement.href =
+        'data:text/csv;charset=utf-8,' + encodeURI(userExcel);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'people.csv';
+      hiddenElement.click();
+    });
+  }
   // play() {
   //   this.nativeAudio
   //     .preloadSimple(
