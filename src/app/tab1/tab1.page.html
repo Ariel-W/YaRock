@@ -1,24 +1,31 @@
 <ion-content [fullscreen]="true" class="background-image">
+  <button (click)="button01()">Button 01</button>
   <!-- <div class="logout-button"><a (click)="logout()">יציאה</a></div> -->
   <div class="home-tab">
     <div class="home-tab-content" *ngIf="showHomeContent">
       <div class="home-tab-subtitle ls-1">אתגרים ירוקים</div>
 
       <div class="green-actions">
-        <div class="green-action-container"
-             *ngFor="let greenAction of greenActions"
-             (click)="actionClicked(greenAction)">
+        <div
+          class="green-action-container"
+          *ngFor="let greenAction of greenActions"
+          (click)="actionClicked(greenAction)"
+        >
           <div class="green-action">
             <div *ngIf="greenAction.isActive">
-              <img class="green-action-image"
-                   src="{{greenAction.imgSrc}}"
-                   alt="greenActionImg" />
+              <img
+                class="green-action-image"
+                src="{{greenAction.imgSrc}}"
+                alt="greenActionImg"
+              />
               <div class="green-action-title">{{greenAction.title}}</div>
             </div>
             <div *ngIf="!greenAction.isActive">
-              <img class="green-action-image-disabled"
-                   src="{{greenAction.imgSrc}}"
-                   alt="greenActionImg" />
+              <img
+                class="green-action-image-disabled"
+                src="{{greenAction.imgSrc}}"
+                alt="greenActionImg"
+              />
               <div class="green-action-title">{{greenAction.title}}</div>
               <div class="green-action-title-small">בקרוב...</div>
             </div>
@@ -28,17 +35,23 @@
       <div class="action-content">
         <div class="action-content-divider"></div>
         <div class="slides">
-          <icon class="slide-arrow-prev"
-                    name="arrow-undo"
-                    (click)="previousSlide()"></icon>
-          <ion-slides #actionSlider
-                      [options]="slideOpts"
-                      (click)="clickEvent()">
+          <icon
+            class="slide-arrow-prev"
+            name="arrow-undo"
+            (click)="previousSlide()"
+          ></icon>
+          <ion-slides
+            #actionSlider
+            [options]="slideOpts"
+            (click)="clickEvent()"
+          >
             <ion-slide>
               <div class="slide-item">
-                <img class="slide-image"
-                     src="{{greenActionsContext[0].sliderImg1Src}}"
-                     alt="" />
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[0].sliderImg1Src}}"
+                  alt=""
+                />
                 <div class="slide-details">
                   <div>{{greenActionsContext[0].sliderText1}}</div>
                 </div>
@@ -47,9 +60,11 @@
 
             <ion-slide>
               <div class="slide-item">
-                <img class="slide-image"
-                     src="{{greenActionsContext[1].sliderImg1Src}}"
-                     alt="" />
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[1].sliderImg1Src}}"
+                  alt=""
+                />
                 <div class="slide-details">
                   <div>{{greenActionsContext[1].sliderText1}}</div>
                 </div>
@@ -58,18 +73,22 @@
 
             <ion-slide>
               <div class="slide-item">
-                <img class="slide-image"
-                     src="{{greenActionsContext[2].sliderImg1Src}}"
-                     alt="" />
+                <img
+                  class="slide-image"
+                  src="{{greenActionsContext[2].sliderImg1Src}}"
+                  alt=""
+                />
                 <div class="slide-details">
                   <div>{{greenActionsContext[2].sliderText1}}</div>
                 </div>
               </div>
             </ion-slide>
           </ion-slides>
-          <icon class="slide-arrow-next"
-                    name="arrow-redo"
-                    (click)="nextSlide()"></icon>
+          <icon
+            class="slide-arrow-next"
+            name="arrow-redo"
+            (click)="nextSlide()"
+          ></icon>
         </div>
       </div>
       <!-- <div class="home-tab-points">
