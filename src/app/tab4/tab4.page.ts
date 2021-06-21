@@ -23,11 +23,11 @@ export class Tab4Page {
   slidesContext = [
     {
       title: 'סקינים לפורטנייט',
-      firstTitle: 'סקין פרוטנייט (עד 300 V-Bucks)',
+      firstTitle: 'ריקוד/תיק פורטנייט (עד 300 V-Bucks)',
       firstImage: 'assets/images/fortnite-03.png',
       firstPoints: 60,
       firstGift: 'fortnite-01',
-      secondTitle: 'סקין פרוטנייט (עד 800 V-Bucks)',
+      secondTitle: 'סקין פורטנייט (עד 800 V-Bucks)',
       secondImage: 'assets/images/fortnite-02.png',
       secondPoints: 80,
       secondGift: 'fortnite-02',
