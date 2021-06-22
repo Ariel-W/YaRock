@@ -49,12 +49,15 @@
       background-size: contain;
       background-color: transparent;
       float: right;
+      margin-right:20px;
     }
 
     .switch-button {
       font-size: 20px;
       font-weight: bold;
       line-height: 40px;
+      padding-right:30px;
+      direction:rtl;
       width: 100px;
       background: url("/assets/images/ButtonReject.png") no-repeat 0px 10px;
       background-size: contain;

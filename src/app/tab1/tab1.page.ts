@@ -114,7 +114,7 @@ export class Tab1Page implements OnInit, AfterViewInit {
       imgSrc: 'assets/icon/reuse.png',
       title: 'Report Reuse Activity',
       sliderImg1Src: 'assets/images/YarockWelcomeIcon.png',
-      sliderText1: 'ניקיון חופים - 27.06.2021',
+      sliderText1: 'אתגר מיוחד - 27.06.2021',
     },
     {
       imgSrc: 'assets/icon/green-power.png',
